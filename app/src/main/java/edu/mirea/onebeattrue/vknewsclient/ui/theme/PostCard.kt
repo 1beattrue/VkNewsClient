@@ -1,32 +1,33 @@
 package edu.mirea.onebeattrue.vknewsclient.ui.theme
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import edu.mirea.onebeattrue.vknewsclient.R
-import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 @Composable
 fun PostCard() {
@@ -34,33 +35,42 @@ fun PostCard() {
         modifier = Modifier
             .padding(8.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.background,
-            contentColor = MaterialTheme.colorScheme.onBackground
+            containerColor = MaterialTheme.colorScheme.primary
         ),
         shape = RoundedCornerShape(4.dp)
     ) {
         Row(
             modifier = Modifier
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .padding(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
                 modifier = Modifier
-                    .padding(8.dp)
-                    .size(48.dp)
-                    .clip(CircleShape),
+                    .clip(CircleShape)
+                    .size(64.dp),
                 painter = painterResource(id = R.drawable.vk_logo),
-                contentDescription = null
+                contentDescription = null,
+                contentScale = ContentScale.Crop
             )
+            Spacer(modifier = Modifier.width(8.dp))
             Column(
-
+                modifier = Modifier.weight(1f)
             ) {
-                Text(text = "Group name")
-                Text(text = "14:00")
+                Text(
+                    text = "Group name",
+                    color = MaterialTheme.colorScheme.onPrimary
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = "14:00",
+                    color = MaterialTheme.colorScheme.onSecondary
+                )
             }
-            Image(
+            Icon(
                 imageVector = Icons.Rounded.MoreVert,
-                contentDescription = null
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSecondary
             )
         }
     }
@@ -68,7 +78,7 @@ fun PostCard() {
 
 @Preview
 @Composable
-fun PostCardLightTheme() {
+private fun PreviewLight() {
     VkNewsClientTheme(darkTheme = false) {
         PostCard()
     }
@@ -76,7 +86,7 @@ fun PostCardLightTheme() {
 
 @Preview
 @Composable
-fun PostCardDarkTheme() {
+private fun PreviewDark() {
     VkNewsClientTheme(darkTheme = true) {
         PostCard()
     }
