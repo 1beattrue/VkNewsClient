@@ -6,4 +6,8 @@
     <string name="repost_count">6</string>
     <string name="comment_count">66</string>
     <string name="like_count">69</string>
+
+    <string name="navigation_item_main">Главная</string>
+    <string name="navigation_item_favourite">Избранное</string>
+    <string name="navigation_item_profile">Профиль</string>
 </resources>
