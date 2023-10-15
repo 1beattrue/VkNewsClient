@@ -10,8 +10,10 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -21,9 +23,10 @@ fun MainScreen() {
     Scaffold(
         bottomBar = {
             NavigationBar {
-                val selectedItemPosition = remember {
+                var selectedItemPosition by rememberSaveable {
                     mutableStateOf(0)
                 }
+
                 val items = listOf(
                     NavigationItem.Home,
                     NavigationItem.Favourite,
@@ -32,8 +35,8 @@ fun MainScreen() {
 
                 items.forEachIndexed { index, item ->
                     NavigationBarItem(
-                        selected = index == selectedItemPosition.value,
-                        onClick = { selectedItemPosition.value = index },
+                        selected = index == selectedItemPosition,
+                        onClick = { selectedItemPosition = index },
                         icon = {
                             Icon(item.icon, contentDescription = null)
                         },
