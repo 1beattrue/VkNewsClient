@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">VkNewsClient</string>
     <string name="group_name">Group name</string>
+    <string name="post_text">Post text</string>
     <string name="post_time">14:00</string>
     <string name="views_count">666</string>
     <string name="repost_count">6</string>
