@@ -1,6 +1,7 @@
 package edu.mirea.onebeattrue.vknewsclient.ui.theme
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,19 +27,18 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import edu.mirea.onebeattrue.vknewsclient.R
 import edu.mirea.onebeattrue.vknewsclient.domain.FeedPost
 import edu.mirea.onebeattrue.vknewsclient.domain.StatisticItem
 import edu.mirea.onebeattrue.vknewsclient.domain.StatisticType
-import java.lang.IllegalStateException
 
 @Composable
 fun PostCard(
     modifier: Modifier = Modifier, // является хорошей практикой
-    feedPost: FeedPost
+    feedPost: FeedPost,
+    onStatisticsItemClickListener: (StatisticItem) -> Unit
 ) {
     Card(
         modifier = modifier
@@ -75,7 +75,10 @@ fun PostCard(
             )
             Spacer(modifier = Modifier.height(8.dp))
 
-            Statistics(statistics = feedPost.statistics)
+            Statistics(
+                statistics = feedPost.statistics,
+                onItemClickListener = onStatisticsItemClickListener
+            )
         }
     }
 }
@@ -120,11 +123,70 @@ private fun PostHeader(
 }
 
 @Composable
+private fun Statistics(
+    statistics: List<StatisticItem>,
+    onItemClickListener: (StatisticItem) -> Unit
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Row(
+            modifier = Modifier
+                .weight(1f)
+        ) {
+            val viewsItem = statistics.getItemByType(StatisticType.VIEWS)
+            IconWithText(
+                iconResId = R.drawable.ic_eye,
+                text = viewsItem.count.toString(),
+                onItemClickListener = {
+                    onItemClickListener(viewsItem)
+                }
+            )
+        }
+        Row(
+            modifier = Modifier
+                .weight(1f),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            val sharesItem = statistics.getItemByType(StatisticType.SHARES)
+            IconWithText(
+                iconResId = R.drawable.ic_share,
+                text = sharesItem.count.toString(),
+                onItemClickListener = {
+                    onItemClickListener(sharesItem)
+                }
+            )
+            val commentsItem = statistics.getItemByType(StatisticType.COMMENTS)
+            IconWithText(
+                iconResId = R.drawable.ic_comments,
+                text = commentsItem.count.toString(),
+                onItemClickListener = {
+                    onItemClickListener(commentsItem)
+                }
+            )
+            val likesItem = statistics.getItemByType(StatisticType.LIKES)
+            IconWithText(
+                iconResId = R.drawable.ic_like_border,
+                text = likesItem.count.toString(),
+                onItemClickListener = {
+                    onItemClickListener(likesItem)
+                }
+            )
+        }
+    }
+}
+
+@Composable
 private fun IconWithText(
     iconResId: Int,
-    text: String
+    text: String,
+    onItemClickListener: () -> Unit
 ) {
-    Row {
+    Row(
+        modifier = Modifier.clickable {
+            onItemClickListener()
+        }
+    ) {
         Icon(
             painter = painterResource(id = iconResId),
             contentDescription = null,
@@ -138,47 +200,6 @@ private fun IconWithText(
     }
 }
 
-@Composable
-private fun Statistics(
-    statistics: List<StatisticItem>
-) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Row(
-            modifier = Modifier
-                .weight(1f)
-        ) {
-            val viewsItem = statistics.getItemByType(StatisticType.VIEWS)
-            IconWithText(
-                iconResId = R.drawable.ic_eye,
-                text = viewsItem.count.toString()
-            )
-        }
-        Row(
-            modifier = Modifier
-                .weight(1f),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            val sharesItem = statistics.getItemByType(StatisticType.SHARES)
-            IconWithText(
-                iconResId = R.drawable.ic_share,
-                text = sharesItem.count.toString()
-            )
-            val commentsItem = statistics.getItemByType(StatisticType.COMMENTS)
-            IconWithText(
-                iconResId = R.drawable.ic_comments,
-                text = commentsItem.count.toString()
-            )
-            val likesItem = statistics.getItemByType(StatisticType.LIKES)
-            IconWithText(
-                iconResId = R.drawable.ic_like_border,
-                text = likesItem.count.toString()
-            )
-        }
-    }
-}
-
 private fun List<StatisticItem>.getItemByType(type: StatisticType): StatisticItem {
     return this.find { it.type == type }
         ?: throw IllegalStateException("Item with this type was not found")
@@ -189,7 +210,7 @@ private fun List<StatisticItem>.getItemByType(type: StatisticType): StatisticIte
 @Composable
 private fun PreviewLight() {
     VkNewsClientTheme(darkTheme = false) {
-        PostCard(feedPost = FeedPost())
+        PostCard(feedPost = FeedPost()) {}
     }
 }
 
@@ -197,6 +218,6 @@ private fun PreviewLight() {
 @Composable
 private fun PreviewDark() {
     VkNewsClientTheme(darkTheme = true) {
-        PostCard(feedPost = FeedPost())
+        PostCard(feedPost = FeedPost()) {}
     }
 }

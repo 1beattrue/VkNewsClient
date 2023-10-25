@@ -12,6 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
@@ -21,6 +22,11 @@ import edu.mirea.onebeattrue.vknewsclient.domain.FeedPost
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen() {
+
+    val feedPost = remember {
+        mutableStateOf(FeedPost())
+    }
+
     Scaffold(
         bottomBar = {
             NavigationBar {
@@ -56,6 +62,21 @@ fun MainScreen() {
             }
         }
     ) {
-        PostCard(feedPost = FeedPost())
+        PostCard(
+            feedPost = feedPost.value,
+            onStatisticsItemClickListener = { newItem ->
+                val oldStatistics = feedPost.value.statistics
+                val newStatistics = oldStatistics.toMutableList().apply {
+                    replaceAll { oldItem ->
+                        if (oldItem.type == newItem.type) {
+                            oldItem.copy(count = oldItem.count + 1)
+                        } else {
+                            oldItem
+                        }
+                    }
+                }
+                feedPost.value = feedPost.value.copy(statistics = newStatistics)
+            }
+        )
     }
 }
