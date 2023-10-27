@@ -64,18 +64,10 @@ fun MainScreen(
         val feedPost = viewModel.feedPost.observeAsState(FeedPost())
         PostCard(
             feedPost = feedPost.value,
-            onLikesClickListener = { likesItem ->
-                viewModel.updateCount(likesItem)
-            },
-            onCommentsClickListener = { commentsItem ->
-                viewModel.updateCount(commentsItem)
-            },
-            onSharesClickListener = { sharesItem ->
-                viewModel.updateCount(sharesItem)
-            },
-            onViewsClickListener = { viewsItem ->
-                viewModel.updateCount(viewsItem)
-            }
+            onLikesClickListener = viewModel::updateCount, // метод референс (аналог { viewModel.updateCount(it) })
+            onCommentsClickListener = viewModel::updateCount,
+            onSharesClickListener = viewModel::updateCount,
+            onViewsClickListener = viewModel::updateCount
         )
     }
 }
