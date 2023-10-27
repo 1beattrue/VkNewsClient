@@ -11,22 +11,22 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.asFlow
 import edu.mirea.onebeattrue.vknewsclient.domain.FeedPost
+import edu.mirea.onebeattrue.vknewsclient.presentation.MainViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen() {
-
-    val feedPost = remember {
-        mutableStateOf(FeedPost())
-    }
-
+fun MainScreen(
+    viewModel: MainViewModel
+) {
     Scaffold(
         bottomBar = {
             NavigationBar {
@@ -62,20 +62,11 @@ fun MainScreen() {
             }
         }
     ) {
+        val feedPost = viewModel.feedPost.observeAsState(FeedPost())
         PostCard(
             feedPost = feedPost.value,
             onStatisticsItemClickListener = { newItem ->
-                val oldStatistics = feedPost.value.statistics
-                val newStatistics = oldStatistics.toMutableList().apply {
-                    replaceAll { oldItem ->
-                        if (oldItem.type == newItem.type) {
-                            oldItem.copy(count = oldItem.count + 1)
-                        } else {
-                            oldItem
-                        }
-                    }
-                }
-                feedPost.value = feedPost.value.copy(statistics = newStatistics)
+                viewModel.updateCount(newItem)
             }
         )
     }
