@@ -38,7 +38,10 @@ import edu.mirea.onebeattrue.vknewsclient.domain.StatisticType
 fun PostCard(
     modifier: Modifier = Modifier, // является хорошей практикой
     feedPost: FeedPost,
-    onStatisticsItemClickListener: (StatisticItem) -> Unit
+    onLikesClickListener: (StatisticItem) -> Unit,
+    onCommentsClickListener: (StatisticItem) -> Unit,
+    onSharesClickListener: (StatisticItem) -> Unit,
+    onViewsClickListener: (StatisticItem) -> Unit
 ) {
     Card(
         modifier = modifier
@@ -77,7 +80,10 @@ fun PostCard(
 
             Statistics(
                 statistics = feedPost.statistics,
-                onItemClickListener = onStatisticsItemClickListener
+                onLikesClickListener = onLikesClickListener,
+                onCommentsClickListener = onCommentsClickListener,
+                onSharesClickListener = onSharesClickListener,
+                onViewsClickListener = onViewsClickListener
             )
         }
     }
@@ -125,7 +131,10 @@ private fun PostHeader(
 @Composable
 private fun Statistics(
     statistics: List<StatisticItem>,
-    onItemClickListener: (StatisticItem) -> Unit
+    onLikesClickListener: (StatisticItem) -> Unit,
+    onCommentsClickListener: (StatisticItem) -> Unit,
+    onSharesClickListener: (StatisticItem) -> Unit,
+    onViewsClickListener: (StatisticItem) -> Unit
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically
@@ -139,7 +148,7 @@ private fun Statistics(
                 iconResId = R.drawable.ic_eye,
                 text = viewsItem.count.toString(),
                 onItemClickListener = {
-                    onItemClickListener(viewsItem)
+                    onViewsClickListener(viewsItem)
                 }
             )
         }
@@ -153,7 +162,7 @@ private fun Statistics(
                 iconResId = R.drawable.ic_share,
                 text = sharesItem.count.toString(),
                 onItemClickListener = {
-                    onItemClickListener(sharesItem)
+                    onSharesClickListener(sharesItem)
                 }
             )
             val commentsItem = statistics.getItemByType(StatisticType.COMMENTS)
@@ -161,7 +170,7 @@ private fun Statistics(
                 iconResId = R.drawable.ic_comments,
                 text = commentsItem.count.toString(),
                 onItemClickListener = {
-                    onItemClickListener(commentsItem)
+                    onCommentsClickListener(commentsItem)
                 }
             )
             val likesItem = statistics.getItemByType(StatisticType.LIKES)
@@ -169,7 +178,7 @@ private fun Statistics(
                 iconResId = R.drawable.ic_like_border,
                 text = likesItem.count.toString(),
                 onItemClickListener = {
-                    onItemClickListener(likesItem)
+                    onLikesClickListener(likesItem)
                 }
             )
         }
@@ -210,7 +219,13 @@ private fun List<StatisticItem>.getItemByType(type: StatisticType): StatisticIte
 @Composable
 private fun PreviewLight() {
     VkNewsClientTheme(darkTheme = false) {
-        PostCard(feedPost = FeedPost()) {}
+        PostCard(
+            feedPost = FeedPost(),
+            onLikesClickListener = {},
+            onCommentsClickListener = {},
+            onSharesClickListener = {},
+            onViewsClickListener = {}
+        )
     }
 }
 
@@ -218,6 +233,12 @@ private fun PreviewLight() {
 @Composable
 private fun PreviewDark() {
     VkNewsClientTheme(darkTheme = true) {
-        PostCard(feedPost = FeedPost()) {}
+        PostCard(
+            feedPost = FeedPost(),
+            onLikesClickListener = {},
+            onCommentsClickListener = {},
+            onSharesClickListener = {},
+            onViewsClickListener = {}
+        )
     }
 }

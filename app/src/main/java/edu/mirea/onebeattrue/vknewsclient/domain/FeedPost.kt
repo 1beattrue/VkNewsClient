@@ -10,7 +10,7 @@ data class FeedPost(
     val contentImageResId: Int = R.drawable.vk_logo,
     val statistics: List<StatisticItem> = listOf(
         StatisticItem(type = StatisticType.VIEWS, count = 666),
-        StatisticItem(type = StatisticType.SHARES, count = 0),
+        StatisticItem(type = StatisticType.SHARES, count = 2),
         StatisticItem(type = StatisticType.COMMENTS, count = 42),
         StatisticItem(type = StatisticType.LIKES, count = 69)
     )
