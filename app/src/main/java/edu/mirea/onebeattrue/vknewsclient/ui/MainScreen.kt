@@ -1,6 +1,7 @@
 package edu.mirea.onebeattrue.vknewsclient.ui
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.LazyColumn
@@ -22,12 +23,13 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import edu.mirea.onebeattrue.vknewsclient.presentation.MainViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun MainScreen(
     viewModel: MainViewModel
@@ -85,6 +87,7 @@ fun MainScreen(
                 }
 
                 SwipeToDismiss(
+                    modifier = Modifier.animateItemPlacement(),
                     state = dismissState,
                     background = {},
                     directions = setOf(DismissDirection.EndToStart),

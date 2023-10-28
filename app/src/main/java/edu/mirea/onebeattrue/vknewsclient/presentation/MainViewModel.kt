@@ -14,7 +14,7 @@ class MainViewModel : ViewModel() {
 
     init {
         _feedPosts.value = mutableListOf<FeedPost>().apply {
-            repeat(5) {
+            repeat(10) {
                 add(FeedPost(id = it))
             }
         }
