@@ -3,6 +3,7 @@ package edu.mirea.onebeattrue.vknewsclient.domain
 import edu.mirea.onebeattrue.vknewsclient.R
 
 data class FeedPost(
+    val id: Int = 0,
     val communityName: String = "Group name",
     val publicationDate: String = "27.10.2023",
     val avatarResId: Int = R.drawable.vk_logo,

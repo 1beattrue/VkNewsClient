@@ -4,8 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.lifecycle.ViewModelProvider
-import edu.mirea.onebeattrue.vknewsclient.ui.theme.MainScreen
+import edu.mirea.onebeattrue.vknewsclient.ui.MainScreen
 import edu.mirea.onebeattrue.vknewsclient.ui.theme.VkNewsClientTheme
 
 class MainActivity : ComponentActivity() {

@@ -7,12 +7,21 @@ import edu.mirea.onebeattrue.vknewsclient.domain.FeedPost
 import edu.mirea.onebeattrue.vknewsclient.domain.StatisticItem
 
 class MainViewModel : ViewModel() {
-    private val _feedPost = MutableLiveData(FeedPost())
-    val feedPost: LiveData<FeedPost>
-        get() = _feedPost
 
-    fun updateCount(statisticItem: StatisticItem) {
-        val oldStatistics = feedPost.value?.statistics ?: throw IllegalStateException()
+    private val _feedPosts = MutableLiveData<List<FeedPost>>(listOf())
+    val feedPosts: LiveData<List<FeedPost>>
+        get() = _feedPosts
+
+    init {
+        _feedPosts.value = mutableListOf<FeedPost>().apply {
+            repeat(5) {
+                add(FeedPost(id = it))
+            }
+        }
+    }
+
+    fun updateCount(oldFeedPost: FeedPost, statisticItem: StatisticItem) {
+        val oldStatistics = oldFeedPost.statistics
         val newStatistics = oldStatistics.toMutableList().apply {
             replaceAll { oldItem ->
                 if (oldItem.type == statisticItem.type) {
@@ -22,6 +31,23 @@ class MainViewModel : ViewModel() {
                 }
             }
         }
-        _feedPost.value = feedPost.value?.copy(statistics = newStatistics)
+        val newFeedPost = oldFeedPost.copy(statistics = newStatistics)
+
+        val oldFeedPosts = _feedPosts.value?.toMutableList() ?: mutableListOf()
+        _feedPosts.value = oldFeedPosts.apply {
+            replaceAll { oldItem ->
+                if (oldItem == oldFeedPost) {
+                    newFeedPost
+                } else {
+                    oldItem
+                }
+            }
+        }
+    }
+
+    fun remove(feedPost: FeedPost) {
+        val oldFeedPosts = _feedPosts.value?.toMutableList() ?: mutableListOf()
+        oldFeedPosts.remove(feedPost)
+        _feedPosts.value = oldFeedPosts
     }
 }

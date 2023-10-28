@@ -1,4 +1,4 @@
-package edu.mirea.onebeattrue.vknewsclient.ui.theme
+package edu.mirea.onebeattrue.vknewsclient.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -33,6 +33,7 @@ import edu.mirea.onebeattrue.vknewsclient.R
 import edu.mirea.onebeattrue.vknewsclient.domain.FeedPost
 import edu.mirea.onebeattrue.vknewsclient.domain.StatisticItem
 import edu.mirea.onebeattrue.vknewsclient.domain.StatisticType
+import edu.mirea.onebeattrue.vknewsclient.ui.theme.VkNewsClientTheme
 
 @Composable
 fun PostCard(
@@ -45,7 +46,6 @@ fun PostCard(
 ) {
     Card(
         modifier = modifier
-            .padding(8.dp)
             .shadow(
                 elevation = 4.dp,
                 shape = RoundedCornerShape(8.dp)

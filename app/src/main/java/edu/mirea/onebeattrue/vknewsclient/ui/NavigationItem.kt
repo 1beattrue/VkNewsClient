@@ -1,4 +1,4 @@
-package edu.mirea.onebeattrue.vknewsclient.ui.theme
+package edu.mirea.onebeattrue.vknewsclient.ui
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Favorite
