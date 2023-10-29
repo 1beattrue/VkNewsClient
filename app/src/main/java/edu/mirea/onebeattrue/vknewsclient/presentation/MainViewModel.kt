@@ -9,10 +9,6 @@ import edu.mirea.onebeattrue.vknewsclient.ui.NavigationItem
 
 class MainViewModel : ViewModel() {
 
-    private val _selectedNavItem = MutableLiveData<NavigationItem>(NavigationItem.Home)
-    val selectedNavItem: LiveData<NavigationItem>
-        get() = _selectedNavItem
-
     private val _feedPosts = MutableLiveData<List<FeedPost>>(listOf())
     val feedPosts: LiveData<List<FeedPost>>
         get() = _feedPosts
@@ -23,10 +19,6 @@ class MainViewModel : ViewModel() {
                 add(FeedPost(id = it))
             }
         }
-    }
-
-    fun selectNavItem(navigationItem: NavigationItem) {
-        _selectedNavItem.value = navigationItem
     }
 
     fun updateCount(oldFeedPost: FeedPost, statisticItem: StatisticItem) {
