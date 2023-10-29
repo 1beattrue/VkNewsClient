@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -22,7 +23,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import edu.mirea.onebeattrue.vknewsclient.navigation.AppNavGraph
+import edu.mirea.onebeattrue.vknewsclient.navigation.NavigationState
 import edu.mirea.onebeattrue.vknewsclient.navigation.Screen
+import edu.mirea.onebeattrue.vknewsclient.navigation.rememberNavigationState
 import edu.mirea.onebeattrue.vknewsclient.presentation.MainViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -30,12 +33,12 @@ import edu.mirea.onebeattrue.vknewsclient.presentation.MainViewModel
 fun MainScreen(
     viewModel: MainViewModel
 ) {
-    val navHostController = rememberNavController()
+    val navigationState = rememberNavigationState()
 
     Scaffold(
         bottomBar = {
             NavigationBar {
-                val navBackStackEntry by navHostController.currentBackStackEntryAsState()
+                val navBackStackEntry by navigationState.navHostController.currentBackStackEntryAsState()
                 val currentRoute = navBackStackEntry?.destination?.route
                 val items = listOf(
                     NavigationItem.Home,
@@ -47,13 +50,7 @@ fun MainScreen(
                     NavigationBarItem(
                         selected = currentRoute == item.screen.route,
                         onClick = {
-                            navHostController.navigate(item.screen.route) {
-                                launchSingleTop = true // позволяет хранить только один экземпляр экрана
-                                popUpTo(Screen.NewsFeed.route) {// рекомендация от Google при использовании BottomNavMenu
-                                    saveState = true // запоминаем state при удалении из бэкстэка
-                                }
-                                restoreState = true // восстанавливаем state при переходе к экрану
-                            }
+                            navigationState.navigateTo(item)
                         },
                         icon = {
                             Icon(item.icon, contentDescription = null)
@@ -74,7 +71,7 @@ fun MainScreen(
         }
     ) {
         AppNavGraph(
-            navHostController = navHostController,
+            navHostController = navigationState.navHostController,
             homeScreenContent = { HomeScreen(viewModel = viewModel) },
             favouriteScreenContent = { TextCounter(name = "Favourite") },
             profileScreenContent = { TextCounter(name = "Profile") }
