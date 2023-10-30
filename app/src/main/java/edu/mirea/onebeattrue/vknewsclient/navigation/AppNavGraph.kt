@@ -17,12 +17,9 @@ fun AppNavGraph(
         navController = navHostController,
         startDestination = Screen.NewsFeed.route
     ) {
-        composable( // добавление направления
-            route = Screen.NewsFeed.route,
-            content = {
-                homeScreenContent()
-            }
-        )
+        composable(Screen.NewsFeed.route) {
+            homeScreenContent()
+        }
 
         composable(Screen.Favourite.route) {
             favouriteScreenContent()
