@@ -21,7 +21,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import edu.mirea.onebeattrue.vknewsclient.navigation.AppNavGraph
 import edu.mirea.onebeattrue.vknewsclient.navigation.rememberNavigationState
 import edu.mirea.onebeattrue.vknewsclient.presentation.MainViewModel
-import edu.mirea.onebeattrue.vknewsclient.ui.HomeScreen
 import edu.mirea.onebeattrue.vknewsclient.ui.NavigationItem
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
