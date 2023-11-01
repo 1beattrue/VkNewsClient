@@ -46,7 +46,8 @@ import edu.mirea.onebeattrue.vknewsclient.ui.theme.VkNewsClientTheme
 @Composable
 fun CommentsScreen(
     feedPost: FeedPost,
-    comments: List<PostComment>
+    comments: List<PostComment>,
+    onBackPressed: () -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -58,7 +59,7 @@ fun CommentsScreen(
                     )
                 },
                 navigationIcon = {
-                    IconButton(onClick = { /*TODO*/ }) {
+                    IconButton(onClick = { onBackPressed() }) {
                         Icon(
                             imageVector = Icons.Rounded.ArrowBack,
                             contentDescription = null

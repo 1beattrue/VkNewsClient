@@ -1,5 +1,6 @@
 package edu.mirea.onebeattrue.vknewsclient.ui.screens
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -36,8 +37,14 @@ fun HomeScreen(
         is HomeScreenState.Comments -> {
             CommentsScreen(
                 feedPost = currentState.feedPost,
-                comments = currentState.comments
+                comments = currentState.comments,
+                onBackPressed = {
+                    viewModel.closeComments()
+                }
             )
+            BackHandler { // переопределение кнопки назад
+                viewModel.closeComments()
+            }
         }
 
         is HomeScreenState.Initial -> {}
@@ -76,8 +83,8 @@ private fun FeedPosts(
                         onLikesClickListener = { statisticItem ->
                             viewModel.updateCount(feedPost, statisticItem)
                         },
-                        onCommentsClickListener = { statisticItem ->
-                            viewModel.updateCount(feedPost, statisticItem)
+                        onCommentsClickListener = {
+                            viewModel.showComments(feedPost)
                         },
                         onSharesClickListener = { statisticItem ->
                             viewModel.updateCount(feedPost, statisticItem)
