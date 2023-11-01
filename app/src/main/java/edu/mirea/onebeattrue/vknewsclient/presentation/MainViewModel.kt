@@ -5,23 +5,26 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import edu.mirea.onebeattrue.vknewsclient.domain.FeedPost
 import edu.mirea.onebeattrue.vknewsclient.domain.StatisticItem
-import edu.mirea.onebeattrue.vknewsclient.ui.NavigationItem
+import edu.mirea.onebeattrue.vknewsclient.ui.HomeScreenState
 
 class MainViewModel : ViewModel() {
-
-    private val _feedPosts = MutableLiveData<List<FeedPost>>(listOf())
-    val feedPosts: LiveData<List<FeedPost>>
-        get() = _feedPosts
-
-    init {
-        _feedPosts.value = mutableListOf<FeedPost>().apply {
-            repeat(10) {
-                add(FeedPost(id = it))
-            }
+    // initialization ******************************************************************************
+    private val sourceList = mutableListOf<FeedPost>().apply {
+        repeat(10) {
+            add(FeedPost(id = it))
         }
     }
+    private val initialState = HomeScreenState.Posts(posts = sourceList)
+    // *********************************************************************************************
+
+    private val _screenState = MutableLiveData<HomeScreenState>(initialState)
+    val screenState: LiveData<HomeScreenState>
+        get() = _screenState
 
     fun updateCount(oldFeedPost: FeedPost, statisticItem: StatisticItem) {
+        val currentState = _screenState.value
+        if (currentState !is HomeScreenState.Posts) return
+
         val oldStatistics = oldFeedPost.statistics
         val newStatistics = oldStatistics.toMutableList().apply {
             replaceAll { oldItem ->
@@ -34,21 +37,26 @@ class MainViewModel : ViewModel() {
         }
         val newFeedPost = oldFeedPost.copy(statistics = newStatistics)
 
-        val oldFeedPosts = _feedPosts.value?.toMutableList() ?: mutableListOf()
-        _feedPosts.value = oldFeedPosts.apply {
+        val oldFeedPosts = currentState.posts.toMutableList()
+        val newFeedPosts = oldFeedPosts.apply {
             replaceAll { oldItem ->
-                if (oldItem == oldFeedPost) {
+                if (oldItem.id == oldFeedPost.id) {
                     newFeedPost
                 } else {
                     oldItem
                 }
             }
         }
+
+        _screenState.value = HomeScreenState.Posts(posts = newFeedPosts)
     }
 
     fun remove(feedPost: FeedPost) {
-        val oldFeedPosts = _feedPosts.value?.toMutableList() ?: mutableListOf()
-        oldFeedPosts.remove(feedPost)
-        _feedPosts.value = oldFeedPosts
+        val currentState = _screenState.value
+        if (currentState !is HomeScreenState.Posts) return
+
+        val feedPosts = currentState.posts.toMutableList()
+        feedPosts.remove(feedPost)
+        _screenState.value = HomeScreenState.Posts(posts = feedPosts)
     }
 }
