@@ -1,4 +1,4 @@
-package edu.mirea.onebeattrue.vknewsclient.ui
+package edu.mirea.onebeattrue.vknewsclient.navigation
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Favorite
@@ -6,7 +6,6 @@ import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.ui.graphics.vector.ImageVector
 import edu.mirea.onebeattrue.vknewsclient.R
-import edu.mirea.onebeattrue.vknewsclient.navigation.Screen
 
 sealed class NavigationItem(
     val screen: Screen,
@@ -14,7 +13,7 @@ sealed class NavigationItem(
     val icon: ImageVector
 ) {
     object Home : NavigationItem(
-        screen = Screen.NewsFeed,
+        screen = Screen.Home,
         titleResId = R.string.navigation_item_main,
         icon = Icons.Rounded.Home
     )
