@@ -23,6 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.currentBackStackEntryAsState
 import edu.mirea.onebeattrue.vknewsclient.domain.FeedPost
 import edu.mirea.onebeattrue.vknewsclient.navigation.AppNavGraph
+import edu.mirea.onebeattrue.vknewsclient.navigation.Screen
 import edu.mirea.onebeattrue.vknewsclient.navigation.rememberNavigationState
 import edu.mirea.onebeattrue.vknewsclient.ui.NavigationItem
 
@@ -71,21 +72,21 @@ fun MainScreen() {
     ) {
         AppNavGraph(
             navHostController = navigationState.navHostController,
-            homeScreenContent = {
-                if (commentsToPost.value == null) {
-                    HomeScreen(
-                        onCommentsClickListener = {
-                            commentsToPost.value = it
-                        }
-                    )
-                } else {
-                    CommentsScreen(
-                        onBackPressed = {
-                            commentsToPost.value = null
-                        },
-                        feedPost = commentsToPost.value!!
-                    )
-                }
+            newsFeedScreenContent = {
+                HomeScreen(
+                    onCommentsClickListener = {
+                        commentsToPost.value = it
+                        navigationState.navigateTo(Screen.Comments.route)
+                    }
+                )
+            },
+            commentsScreenContent = {
+                CommentsScreen(
+                    onBackPressed = {
+                        commentsToPost.value = null
+                    },
+                    feedPost = commentsToPost.value!!
+                )
             },
             favouriteScreenContent = { TextCounter(name = "Favourite") },
             profileScreenContent = { TextCounter(name = "Profile") }
