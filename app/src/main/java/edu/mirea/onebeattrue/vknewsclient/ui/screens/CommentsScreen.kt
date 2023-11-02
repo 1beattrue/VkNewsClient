@@ -22,26 +22,29 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import edu.mirea.onebeattrue.vknewsclient.domain.FeedPost
 import edu.mirea.onebeattrue.vknewsclient.domain.PostComment
 import edu.mirea.onebeattrue.vknewsclient.presentation.viewmodels.CommentsViewModel
+import edu.mirea.onebeattrue.vknewsclient.presentation.viewmodels.CommentsViewModelFactory
 import edu.mirea.onebeattrue.vknewsclient.ui.CommentItem
 import edu.mirea.onebeattrue.vknewsclient.ui.states.CommentsScreenState
 
 @Composable
 fun CommentsScreen(
-    onBackPressed: () -> Unit
+    onBackPressed: () -> Unit,
+    feedPost: FeedPost
 ) {
-    val viewModel: CommentsViewModel = viewModel()
+    val viewModel: CommentsViewModel = viewModel(
+        factory = CommentsViewModelFactory(feedPost)
+    )
     val screenState = viewModel.screenState.observeAsState(CommentsScreenState.Initial)
-
-    viewModel.loadComments(FeedPost()) // временно
 
     when(val currentState = screenState.value) {
         is CommentsScreenState.Comments -> {
             Comments(
                 feedPost = currentState.feedPost,
-                comments = currentState.comments
-            ) {
-
-            }
+                comments = currentState.comments,
+                onBackPressed = {
+                    onBackPressed()
+                }
+            )
         }
         is CommentsScreenState.Initial -> {}
     }

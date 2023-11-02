@@ -7,7 +7,9 @@ import edu.mirea.onebeattrue.vknewsclient.domain.FeedPost
 import edu.mirea.onebeattrue.vknewsclient.domain.PostComment
 import edu.mirea.onebeattrue.vknewsclient.ui.states.CommentsScreenState
 
-class CommentsViewModel : ViewModel() {
+class CommentsViewModel(
+    feedPost: FeedPost
+) : ViewModel() {
     // initialization ******************************************************************************
     private val sourceComments = mutableListOf<PostComment>().apply {
         repeat(10) {
@@ -21,14 +23,14 @@ class CommentsViewModel : ViewModel() {
     val screenState: LiveData<CommentsScreenState>
         get() = _screenState
 
-    fun loadComments(feedPost: FeedPost) { // временный метод для имитации загрузки из сети
-        val comments = sourceComments
-
-        _screenState.value = CommentsScreenState.Comments(
-            feedPost = feedPost,
-            comments = comments
-        )
+    init {
+        loadComments(feedPost)
     }
 
-
+    private fun loadComments(feedPost: FeedPost) { // временный метод для имитации загрузки из сети
+        _screenState.value = CommentsScreenState.Comments(
+            feedPost = feedPost,
+            comments = sourceComments
+        )
+    }
 }
