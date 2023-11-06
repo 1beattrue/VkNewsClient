@@ -1,5 +1,7 @@
 package edu.mirea.onebeattrue.vknewsclient.navigation
 
+import android.net.Uri
+import com.google.gson.Gson
 import edu.mirea.onebeattrue.vknewsclient.domain.FeedPost
 
 sealed class Screen(
@@ -9,7 +11,10 @@ sealed class Screen(
     object Comments : Screen(ROUTE_COMMENTS) {
 
         private const val ROUTE_FOR_ARGS = "comments"
-        fun getRouteWithArgs(feedPost: FeedPost) = "$ROUTE_FOR_ARGS/${feedPost.id}"
+        fun getRouteWithArgs(feedPost: FeedPost): String {
+            val feedPostJson = Gson().toJson(feedPost)
+            return "$ROUTE_FOR_ARGS/${feedPostJson.encode()}" // передача объекта в формате Json
+        }
     }
 
     object Home : Screen(ROUTE_HOME)
@@ -17,9 +22,9 @@ sealed class Screen(
     object Profile : Screen(ROUTE_PROFILE)
 
     companion object {
-        const val KEY_FEED_POST_ID = "feed_post_id"
+        const val KEY_FEED_POST = "feed_post"
 
-        const val ROUTE_COMMENTS = "comments/{$KEY_FEED_POST_ID}" // передача ключа строкового аргумента
+        const val ROUTE_COMMENTS = "comments/{$KEY_FEED_POST}"
         const val ROUTE_NEWS_FEED = "news_feed"
 
         const val ROUTE_HOME = "home"
@@ -27,3 +32,6 @@ sealed class Screen(
         const val ROUTE_PROFILE = "profile"
     }
 }
+
+fun String.encode(): String =
+    Uri.encode(this) // для правильной передачи строк, содержащих спецсимволы (например '/')
