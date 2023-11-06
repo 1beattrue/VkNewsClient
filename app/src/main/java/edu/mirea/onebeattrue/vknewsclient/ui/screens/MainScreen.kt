@@ -24,17 +24,13 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
 import edu.mirea.onebeattrue.vknewsclient.domain.FeedPost
 import edu.mirea.onebeattrue.vknewsclient.navigation.AppNavGraph
-import edu.mirea.onebeattrue.vknewsclient.navigation.Screen
-import edu.mirea.onebeattrue.vknewsclient.navigation.rememberNavigationState
 import edu.mirea.onebeattrue.vknewsclient.navigation.NavigationItem
+import edu.mirea.onebeattrue.vknewsclient.navigation.rememberNavigationState
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MainScreen() {
     val navigationState = rememberNavigationState()
-    val commentsToPost: MutableState<FeedPost?> = remember {
-        mutableStateOf(null)
-    }
 
     Scaffold(
         bottomBar = {
@@ -82,18 +78,17 @@ fun MainScreen() {
             navHostController = navigationState.navHostController,
             newsFeedScreenContent = {
                 HomeScreen(
-                    onCommentsClickListener = {
-                        commentsToPost.value = it
-                        navigationState.navigateToComments()
+                    onCommentsClickListener = { feedPost ->
+                        navigationState.navigateToComments(feedPost)
                     }
                 )
             },
-            commentsScreenContent = {
+            commentsScreenContent = { feedPost ->
                 CommentsScreen(
                     onBackPressed = {
                         navigationState.navHostController.popBackStack()
                     },
-                    feedPost = commentsToPost.value!!
+                    feedPost = feedPost
                 )
             },
             favouriteScreenContent = { TextCounter(name = "Favourite") },

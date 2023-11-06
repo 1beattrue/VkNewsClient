@@ -5,6 +5,7 @@ import androidx.compose.runtime.remember
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import edu.mirea.onebeattrue.vknewsclient.domain.FeedPost
 
 class NavigationState(
     val navHostController: NavHostController
@@ -19,18 +20,8 @@ class NavigationState(
         }
     }
 
-    fun navigateTo(route: String) {
-        navHostController.navigate(route) {
-            launchSingleTop = true
-            popUpTo(navHostController.graph.findStartDestination().id) {
-                saveState = true
-            }
-            restoreState = true
-        }
-    }
-
-    fun navigateToComments() { // чтобы экран комментариев оставался открытым при возвращении к нему через bnm
-        navHostController.navigate(Screen.Comments.route)
+    fun navigateToComments(feedPost: FeedPost) { // чтобы экран комментариев оставался открытым при возвращении к нему через bnm
+        navHostController.navigate(Screen.Comments.getRouteWithArgs(feedPost))
     }
 }
 

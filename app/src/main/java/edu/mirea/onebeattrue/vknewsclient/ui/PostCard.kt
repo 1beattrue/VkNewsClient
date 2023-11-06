@@ -37,7 +37,7 @@ import edu.mirea.onebeattrue.vknewsclient.ui.theme.VkNewsClientTheme
 
 @Composable
 fun PostCard(
-    modifier: Modifier = Modifier, // является хорошей практикой
+    modifier: Modifier = Modifier,
     feedPost: FeedPost,
     onLikesClickListener: (StatisticItem) -> Unit,
     onCommentsClickListener: (StatisticItem) -> Unit,
