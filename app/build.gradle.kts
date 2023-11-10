@@ -51,6 +51,9 @@ android {
 }
 
 dependencies {
+    implementation("com.vk:android-sdk-core:4.1.0")
+    implementation("com.vk:android-sdk-api:4.1.0")
+
     implementation("com.google.code.gson:gson:2.10.1")
 
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
