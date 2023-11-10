@@ -5,7 +5,12 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import com.vk.api.sdk.VK
 import com.vk.api.sdk.auth.VKAuthenticationResult
 import com.vk.api.sdk.auth.VKScope
@@ -18,6 +23,11 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             VkNewsClientTheme {
+                val someState = remember {
+                    mutableStateOf(true)
+                }
+                Log.d("MainActivity", "Recomposition: ${someState.value}")
+
                 val launcher = rememberLauncherForActivityResult(
                     contract = VK.getVKAuthActivityResultContract()
                 ) { result ->
@@ -31,10 +41,18 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                 }
-                SideEffect {
-                    launcher.launch(listOf(VKScope.WALL)) // код запустится после каждой успешной рекомпозиции основной функции
+                LaunchedEffect(key1 = someState.value) { // вызывается при первой рекомпозиции и при каждом изменении ключа
+                    Log.d("MainActivity", "LaunchedEffect")
                 }
-                MainScreen()
+                SideEffect {
+                    Log.d("MainActivity", "SideEffect")
+                    // launcher.launch(listOf(VKScope.WALL)) // код запустится после каждой успешной рекомпозиции основной функции
+                }
+
+                Button(onClick = { someState.value = !someState.value }) {
+                    Text(text = "change state")
+                }
+                // MainScreen()
             }
         }
     }
