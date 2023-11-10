@@ -5,13 +5,10 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
+import androidx.compose.runtime.SideEffect
 import com.vk.api.sdk.VK
 import com.vk.api.sdk.auth.VKAuthenticationResult
 import com.vk.api.sdk.auth.VKScope
-import edu.mirea.onebeattrue.vknewsclient.presentation.viewmodels.NewsFeedViewModel
-import edu.mirea.onebeattrue.vknewsclient.ui.MyNumber
-import edu.mirea.onebeattrue.vknewsclient.ui.SideEffectTest
 import edu.mirea.onebeattrue.vknewsclient.ui.screens.MainScreen
 import edu.mirea.onebeattrue.vknewsclient.ui.theme.VkNewsClientTheme
 
@@ -21,23 +18,23 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             VkNewsClientTheme {
-                SideEffectTest(number = MyNumber(10))
-                
-//                val launcher = rememberLauncherForActivityResult(
-//                    contract = VK.getVKAuthActivityResultContract()
-//                ) { result ->
-//                    when (result) {
-//                        is VKAuthenticationResult.Success -> {
-//                            Log.d("MainActivity", "Success auth")
-//                        }
-//
-//                        is VKAuthenticationResult.Failed -> {
-//                            Log.d("MainActivity", "Failed auth")
-//                        }
-//                    }
-//                }
-//                launcher.launch(listOf(VKScope.WALL))
-//                MainScreen()
+                val launcher = rememberLauncherForActivityResult(
+                    contract = VK.getVKAuthActivityResultContract()
+                ) { result ->
+                    when (result) {
+                        is VKAuthenticationResult.Success -> {
+                            Log.d("MainActivity", "Success auth")
+                        }
+
+                        is VKAuthenticationResult.Failed -> {
+                            Log.d("MainActivity", "Failed auth")
+                        }
+                    }
+                }
+                SideEffect {
+                    launcher.launch(listOf(VKScope.WALL)) // код запустится после каждой успешной рекомпозиции основной функции
+                }
+                MainScreen()
             }
         }
     }
