@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import edu.mirea.onebeattrue.vknewsclient.domain.FeedPost
 import edu.mirea.onebeattrue.vknewsclient.domain.PostComment
-import edu.mirea.onebeattrue.vknewsclient.ui.states.CommentsScreenState
+import edu.mirea.onebeattrue.vknewsclient.presentation.states.CommentsScreenState
 
 class CommentsViewModel(
     feedPost: FeedPost

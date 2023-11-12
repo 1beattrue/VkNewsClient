@@ -1,4 +1,4 @@
-package edu.mirea.onebeattrue.vknewsclient.ui.screens
+package edu.mirea.onebeattrue.vknewsclient.presentation.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement

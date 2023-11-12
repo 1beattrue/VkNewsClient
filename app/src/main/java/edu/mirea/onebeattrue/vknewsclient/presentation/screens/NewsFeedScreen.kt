@@ -1,4 +1,4 @@
-package edu.mirea.onebeattrue.vknewsclient.ui.screens
+package edu.mirea.onebeattrue.vknewsclient.presentation.screens
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
@@ -17,11 +17,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import edu.mirea.onebeattrue.vknewsclient.domain.FeedPost
 import edu.mirea.onebeattrue.vknewsclient.presentation.viewmodels.NewsFeedViewModel
 import edu.mirea.onebeattrue.vknewsclient.ui.PostCard
-import edu.mirea.onebeattrue.vknewsclient.ui.states.NewsFeedScreenState
+import edu.mirea.onebeattrue.vknewsclient.presentation.states.NewsFeedScreenState
 
 
 @Composable
-fun HomeScreen(
+fun NewsFeedScreen(
     onCommentsClickListener: (FeedPost) -> Unit
 ) {
     val viewModel: NewsFeedViewModel = viewModel() // нужен impl

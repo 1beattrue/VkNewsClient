@@ -1,4 +1,4 @@
-package edu.mirea.onebeattrue.vknewsclient.ui.states
+package edu.mirea.onebeattrue.vknewsclient.presentation.states
 
 import edu.mirea.onebeattrue.vknewsclient.domain.FeedPost
 import edu.mirea.onebeattrue.vknewsclient.domain.PostComment

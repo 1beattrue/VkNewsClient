@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.vk.api.sdk.VK
 import com.vk.api.sdk.auth.VKAuthenticationResult
-import edu.mirea.onebeattrue.vknewsclient.ui.states.AuthState
+import edu.mirea.onebeattrue.vknewsclient.presentation.states.AuthState
 
 class MainViewModel : ViewModel() {
     private val _authState = MutableLiveData<AuthState>(AuthState.Initial)

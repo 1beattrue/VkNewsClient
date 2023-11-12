@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import edu.mirea.onebeattrue.vknewsclient.domain.FeedPost
 import edu.mirea.onebeattrue.vknewsclient.domain.StatisticItem
-import edu.mirea.onebeattrue.vknewsclient.ui.states.NewsFeedScreenState
+import edu.mirea.onebeattrue.vknewsclient.presentation.states.NewsFeedScreenState
 
 class NewsFeedViewModel : ViewModel() {
     // initialization ******************************************************************************

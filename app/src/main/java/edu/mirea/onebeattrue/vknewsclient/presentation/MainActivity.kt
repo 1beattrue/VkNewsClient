@@ -9,9 +9,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.vk.api.sdk.VK
 import com.vk.api.sdk.auth.VKScope
 import edu.mirea.onebeattrue.vknewsclient.presentation.viewmodels.MainViewModel
-import edu.mirea.onebeattrue.vknewsclient.ui.screens.LoginScreen
-import edu.mirea.onebeattrue.vknewsclient.ui.screens.MainScreen
-import edu.mirea.onebeattrue.vknewsclient.ui.states.AuthState
+import edu.mirea.onebeattrue.vknewsclient.presentation.screens.LoginScreen
+import edu.mirea.onebeattrue.vknewsclient.presentation.screens.MainScreen
+import edu.mirea.onebeattrue.vknewsclient.presentation.states.AuthState
 import edu.mirea.onebeattrue.vknewsclient.ui.theme.VkNewsClientTheme
 
 class MainActivity : ComponentActivity() {

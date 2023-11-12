@@ -1,4 +1,4 @@
-package edu.mirea.onebeattrue.vknewsclient.ui.states
+package edu.mirea.onebeattrue.vknewsclient.presentation.states
 
 sealed class AuthState {
     object Initial: AuthState()

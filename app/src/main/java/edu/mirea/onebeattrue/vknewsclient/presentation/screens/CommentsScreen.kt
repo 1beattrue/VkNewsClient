@@ -1,4 +1,4 @@
-package edu.mirea.onebeattrue.vknewsclient.ui.screens
+package edu.mirea.onebeattrue.vknewsclient.presentation.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -24,7 +24,7 @@ import edu.mirea.onebeattrue.vknewsclient.domain.PostComment
 import edu.mirea.onebeattrue.vknewsclient.presentation.viewmodels.CommentsViewModel
 import edu.mirea.onebeattrue.vknewsclient.presentation.viewmodels.CommentsViewModelFactory
 import edu.mirea.onebeattrue.vknewsclient.ui.CommentItem
-import edu.mirea.onebeattrue.vknewsclient.ui.states.CommentsScreenState
+import edu.mirea.onebeattrue.vknewsclient.presentation.states.CommentsScreenState
 
 @Composable
 fun CommentsScreen(
