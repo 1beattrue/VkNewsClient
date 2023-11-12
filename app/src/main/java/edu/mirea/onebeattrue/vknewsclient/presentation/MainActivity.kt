@@ -12,16 +12,18 @@ import edu.mirea.onebeattrue.vknewsclient.presentation.viewmodels.MainViewModel
 import edu.mirea.onebeattrue.vknewsclient.presentation.screens.LoginScreen
 import edu.mirea.onebeattrue.vknewsclient.presentation.screens.MainScreen
 import edu.mirea.onebeattrue.vknewsclient.presentation.states.AuthState
+import edu.mirea.onebeattrue.vknewsclient.presentation.viewmodels.MainViewModelFactory
 import edu.mirea.onebeattrue.vknewsclient.ui.theme.VkNewsClientTheme
 
 class MainActivity : ComponentActivity() {
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             VkNewsClientTheme {
-                val viewModel: MainViewModel = viewModel()
+                val viewModel: MainViewModel = viewModel(
+                    factory = MainViewModelFactory(application)
+                )
                 val authState = viewModel.authState.observeAsState(AuthState.Initial)
 
                 val launcher = rememberLauncherForActivityResult(
