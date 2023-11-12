@@ -1,6 +1,5 @@
 package edu.mirea.onebeattrue.vknewsclient.ui
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -27,13 +27,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import edu.mirea.onebeattrue.vknewsclient.R
 import edu.mirea.onebeattrue.vknewsclient.domain.FeedPost
 import edu.mirea.onebeattrue.vknewsclient.domain.StatisticItem
 import edu.mirea.onebeattrue.vknewsclient.domain.StatisticType
-import edu.mirea.onebeattrue.vknewsclient.ui.theme.VkNewsClientTheme
 
 @Composable
 fun PostCard(
@@ -69,10 +68,11 @@ fun PostCard(
             )
             Spacer(modifier = Modifier.height(8.dp))
 
-            Image(
+            AsyncImage(
                 modifier = Modifier
-                    .fillMaxWidth(),
-                painter = painterResource(id = feedPost.contentImageResId),
+                    .fillMaxWidth()
+                    .wrapContentHeight(),
+                model = feedPost.contentImageUrl,
                 contentDescription = null,
                 contentScale = ContentScale.FillWidth
             )
@@ -98,11 +98,11 @@ private fun PostHeader(
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Image(
+        AsyncImage(
             modifier = Modifier
                 .clip(CircleShape)
                 .size(64.dp),
-            painter = painterResource(id = feedPost.avatarResId),
+            model = feedPost.communityImageUrl,
             contentDescription = null,
             contentScale = ContentScale.Crop
         )
@@ -212,33 +212,4 @@ private fun IconWithText(
 private fun List<StatisticItem>.getItemByType(type: StatisticType): StatisticItem {
     return this.find { it.type == type }
         ?: throw IllegalStateException("Item with this type was not found")
-}
-
-
-@Preview
-@Composable
-private fun PreviewLight() {
-    VkNewsClientTheme(darkTheme = false) {
-        PostCard(
-            feedPost = FeedPost(),
-            onLikesClickListener = {},
-            onCommentsClickListener = {},
-            onSharesClickListener = {},
-            onViewsClickListener = {}
-        )
-    }
-}
-
-@Preview
-@Composable
-private fun PreviewDark() {
-    VkNewsClientTheme(darkTheme = true) {
-        PostCard(
-            feedPost = FeedPost(),
-            onLikesClickListener = {},
-            onCommentsClickListener = {},
-            onSharesClickListener = {},
-            onViewsClickListener = {}
-        )
-    }
 }

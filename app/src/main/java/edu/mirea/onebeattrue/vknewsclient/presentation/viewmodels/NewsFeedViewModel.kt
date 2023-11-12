@@ -1,25 +1,45 @@
 package edu.mirea.onebeattrue.vknewsclient.presentation.viewmodels
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.vk.api.sdk.VKPreferencesKeyValueStorage
+import com.vk.api.sdk.auth.VKAccessToken
+import edu.mirea.onebeattrue.vknewsclient.data.mapper.NewsFeedMapper
+import edu.mirea.onebeattrue.vknewsclient.data.network.ApiFactory
+import edu.mirea.onebeattrue.vknewsclient.data.network.ApiService
 import edu.mirea.onebeattrue.vknewsclient.domain.FeedPost
 import edu.mirea.onebeattrue.vknewsclient.domain.StatisticItem
 import edu.mirea.onebeattrue.vknewsclient.presentation.states.NewsFeedScreenState
+import kotlinx.coroutines.launch
 
-class NewsFeedViewModel : ViewModel() {
+class NewsFeedViewModel(application: Application) : AndroidViewModel(application) {
     // initialization ******************************************************************************
-    private val sourcePosts = mutableListOf<FeedPost>().apply {
-        repeat(10) {
-            add(FeedPost(id = it))
-        }
-    }
-    private val initialState = NewsFeedScreenState.Posts(posts = sourcePosts)
+    private val initialState = NewsFeedScreenState.Initial
     // *********************************************************************************************
 
     private val _screenState = MutableLiveData<NewsFeedScreenState>(initialState)
     val screenState: LiveData<NewsFeedScreenState>
         get() = _screenState
+
+    private val mapper = NewsFeedMapper()
+
+    init {
+        loadRecommendations()
+    }
+
+    private fun loadRecommendations() {
+        viewModelScope.launch {
+            val storage = VKPreferencesKeyValueStorage(getApplication())
+            val token = VKAccessToken.restore(storage) ?: return@launch
+            val response = ApiFactory.apiService.loadRecommendations(token.accessToken)
+            val feedPosts = mapper.mapResponseToPosts(response)
+            _screenState.value = NewsFeedScreenState.Posts(feedPosts)
+        }
+    }
 
     fun updateCount(oldFeedPost: FeedPost, statisticItem: StatisticItem) {
         val currentState = _screenState.value
