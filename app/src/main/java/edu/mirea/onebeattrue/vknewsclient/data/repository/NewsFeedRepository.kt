@@ -29,12 +29,20 @@ class NewsFeedRepository(
         return posts
     }
 
-    suspend fun addLike(feedPost: FeedPost) {
-        val response = apiService.addLike(
-            token = getAccessToken(),
-            ownerId = feedPost.communityId,
-            postId = feedPost.id
-        )
+    suspend fun changeLikeStatus(feedPost: FeedPost) {
+        val response = if (feedPost.isLiked) {
+            apiService.deleteLike(
+                token = getAccessToken(),
+                ownerId = feedPost.communityId,
+                postId = feedPost.id
+            )
+        } else {
+            apiService.addLike(
+                token = getAccessToken(),
+                ownerId = feedPost.communityId,
+                postId = feedPost.id
+            )
+        }
 
         val newLikesCount = response.likes.count
         val newStatistics = feedPost.statistics.toMutableList().apply {
@@ -42,25 +50,7 @@ class NewsFeedRepository(
             add(StatisticItem(type = StatisticType.LIKES, count = newLikesCount))
         }
 
-        val newPost = feedPost.copy(isLiked = true, statistics = newStatistics)
-        val postIndex = _feedPosts.indexOf(feedPost)
-        _feedPosts[postIndex] = newPost
-    }
-
-    suspend fun deleteLike(feedPost: FeedPost) {
-        val response = apiService.deleteLike(
-            token = getAccessToken(),
-            ownerId = feedPost.communityId,
-            postId = feedPost.id
-        )
-
-        val newLikesCount = response.likes.count
-        val newStatistics = feedPost.statistics.toMutableList().apply {
-            removeIf { it.type == StatisticType.LIKES }
-            add(StatisticItem(type = StatisticType.LIKES, count = newLikesCount))
-        }
-
-        val newPost = feedPost.copy(isLiked = false, statistics = newStatistics)
+        val newPost = feedPost.copy(isLiked = !feedPost.isLiked, statistics = newStatistics)
         val postIndex = _feedPosts.indexOf(feedPost)
         _feedPosts[postIndex] = newPost
     }
