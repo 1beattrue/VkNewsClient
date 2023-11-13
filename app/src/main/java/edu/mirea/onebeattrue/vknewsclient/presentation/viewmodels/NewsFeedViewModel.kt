@@ -32,6 +32,17 @@ class NewsFeedViewModel(application: Application) : AndroidViewModel(application
         loadRecommendations()
     }
 
+    fun changeLikeStatus(feedPost: FeedPost) {
+        viewModelScope.launch {
+            if (feedPost.isLiked) {
+                repository.deleteLike(feedPost)
+            } else {
+                repository.addLike(feedPost)
+            }
+            _screenState.value = NewsFeedScreenState.Posts(repository.feedPosts)
+        }
+    }
+
     private fun loadRecommendations() {
         viewModelScope.launch {
             val feedPosts = repository.loadRecommendations()
