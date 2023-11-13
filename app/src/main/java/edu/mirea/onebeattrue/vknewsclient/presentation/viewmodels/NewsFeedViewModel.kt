@@ -11,6 +11,7 @@ import com.vk.api.sdk.auth.VKAccessToken
 import edu.mirea.onebeattrue.vknewsclient.data.mapper.NewsFeedMapper
 import edu.mirea.onebeattrue.vknewsclient.data.network.ApiFactory
 import edu.mirea.onebeattrue.vknewsclient.data.network.ApiService
+import edu.mirea.onebeattrue.vknewsclient.data.repository.NewsFeedRepository
 import edu.mirea.onebeattrue.vknewsclient.domain.FeedPost
 import edu.mirea.onebeattrue.vknewsclient.domain.StatisticItem
 import edu.mirea.onebeattrue.vknewsclient.presentation.states.NewsFeedScreenState
@@ -25,7 +26,7 @@ class NewsFeedViewModel(application: Application) : AndroidViewModel(application
     val screenState: LiveData<NewsFeedScreenState>
         get() = _screenState
 
-    private val mapper = NewsFeedMapper()
+    private val repository = NewsFeedRepository(application)
 
     init {
         loadRecommendations()
@@ -33,10 +34,7 @@ class NewsFeedViewModel(application: Application) : AndroidViewModel(application
 
     private fun loadRecommendations() {
         viewModelScope.launch {
-            val storage = VKPreferencesKeyValueStorage(getApplication())
-            val token = VKAccessToken.restore(storage) ?: return@launch
-            val response = ApiFactory.apiService.loadRecommendations(token.accessToken)
-            val feedPosts = mapper.mapResponseToPosts(response)
+            val feedPosts = repository.loadRecommendations()
             _screenState.value = NewsFeedScreenState.Posts(feedPosts)
         }
     }
