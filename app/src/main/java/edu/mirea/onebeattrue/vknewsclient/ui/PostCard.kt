@@ -128,6 +128,18 @@ private fun PostHeader(
     }
 }
 
+private fun StatisticItem.formattedCount(): String {
+    return if (count > 100_000) {
+        String.format("%sK", count / 1000)
+    } else if (count > 1000) {
+        String.format("%.1fK", count / 1000f)
+    } else if (count == 0) {
+        ""
+    } else {
+        count.toString()
+    }
+}
+
 @Composable
 private fun Statistics(
     statistics: List<StatisticItem>,
@@ -137,30 +149,29 @@ private fun Statistics(
     onViewsClickListener: (StatisticItem) -> Unit
 ) {
     Row(
+        modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Row(
-            modifier = Modifier
-                .weight(1f)
+            modifier = Modifier.weight(.4f)
         ) {
             val viewsItem = statistics.getItemByType(StatisticType.VIEWS)
             IconWithText(
                 iconResId = R.drawable.ic_eye,
-                text = viewsItem.count.toString(),
+                text = viewsItem.formattedCount(),
                 onItemClickListener = {
                     onViewsClickListener(viewsItem)
                 }
             )
         }
         Row(
-            modifier = Modifier
-                .weight(1f),
-            horizontalArrangement = Arrangement.SpaceBetween
+            modifier = Modifier.weight(.6f),
+            horizontalArrangement = Arrangement.SpaceAround
         ) {
             val sharesItem = statistics.getItemByType(StatisticType.SHARES)
             IconWithText(
                 iconResId = R.drawable.ic_share,
-                text = sharesItem.count.toString(),
+                text = sharesItem.formattedCount(),
                 onItemClickListener = {
                     onSharesClickListener(sharesItem)
                 }
@@ -168,7 +179,7 @@ private fun Statistics(
             val commentsItem = statistics.getItemByType(StatisticType.COMMENTS)
             IconWithText(
                 iconResId = R.drawable.ic_comments,
-                text = commentsItem.count.toString(),
+                text = commentsItem.formattedCount(),
                 onItemClickListener = {
                     onCommentsClickListener(commentsItem)
                 }
@@ -176,7 +187,7 @@ private fun Statistics(
             val likesItem = statistics.getItemByType(StatisticType.LIKES)
             IconWithText(
                 iconResId = R.drawable.ic_like_border,
-                text = likesItem.count.toString(),
+                text = likesItem.formattedCount(),
                 onItemClickListener = {
                     onLikesClickListener(likesItem)
                 }

@@ -4,6 +4,10 @@ import edu.mirea.onebeattrue.vknewsclient.data.model.NewsFeedResponseDto
 import edu.mirea.onebeattrue.vknewsclient.domain.FeedPost
 import edu.mirea.onebeattrue.vknewsclient.domain.StatisticItem
 import edu.mirea.onebeattrue.vknewsclient.domain.StatisticType
+import java.sql.Timestamp
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import kotlin.math.absoluteValue
 
 class NewsFeedMapper {
@@ -19,7 +23,7 @@ class NewsFeedMapper {
             val feedPost = FeedPost(
                 id = post.id,
                 communityName = group.name,
-                publicationDate = post.date.toString(),
+                publicationDate = mapTimestampToDate(post.date),
                 communityImageUrl = group.imageUrl,
                 contentText = post.text,
                 contentImageUrl = post.attachments.firstOrNull()?.photo?.photoUrls?.lastOrNull()?.url, // пока только одно изображение
@@ -34,5 +38,11 @@ class NewsFeedMapper {
         }
 
         return result
+    }
+
+    private fun mapTimestampToDate(timestampSeconds: Long): String {
+        val timestampMilliseconds = timestampSeconds * 1000
+        val date = Date(timestampMilliseconds)
+        return SimpleDateFormat("d MMMM yyyy, hh:mm", Locale.getDefault()).format(date)
     }
 }
