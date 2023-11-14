@@ -7,7 +7,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import edu.mirea.onebeattrue.vknewsclient.data.repository.NewsFeedRepository
 import edu.mirea.onebeattrue.vknewsclient.domain.FeedPost
-import edu.mirea.onebeattrue.vknewsclient.domain.StatisticItem
 import edu.mirea.onebeattrue.vknewsclient.presentation.states.NewsFeedScreenState
 import kotlinx.coroutines.launch
 
@@ -54,35 +53,5 @@ class NewsFeedViewModel(application: Application) : AndroidViewModel(application
             repository.deletePost(feedPost)
             _screenState.value = NewsFeedScreenState.Posts(repository.feedPosts)
         }
-    }
-
-    fun updateCount(oldFeedPost: FeedPost, statisticItem: StatisticItem) {
-        val currentState = _screenState.value
-        if (currentState !is NewsFeedScreenState.Posts) return
-
-        val oldStatistics = oldFeedPost.statistics
-        val newStatistics = oldStatistics.toMutableList().apply {
-            replaceAll { oldItem ->
-                if (oldItem.type == statisticItem.type) {
-                    oldItem.copy(count = oldItem.count + 1)
-                } else {
-                    oldItem
-                }
-            }
-        }
-        val newFeedPost = oldFeedPost.copy(statistics = newStatistics)
-
-        val oldFeedPosts = currentState.posts.toMutableList()
-        val newFeedPosts = oldFeedPosts.apply {
-            replaceAll { oldItem ->
-                if (oldItem.id == oldFeedPost.id) {
-                    newFeedPost
-                } else {
-                    oldItem
-                }
-            }
-        }
-
-        _screenState.value = NewsFeedScreenState.Posts(posts = newFeedPosts)
     }
 }

@@ -102,12 +102,6 @@ private fun FeedPosts(
                         onCommentsClickListener = {
                             onCommentsClickListener(feedPost)
                         },
-                        onSharesClickListener = { statisticItem ->
-                            viewModel.updateCount(feedPost, statisticItem)
-                        },
-                        onViewsClickListener = { statisticItem ->
-                            viewModel.updateCount(feedPost, statisticItem)
-                        }
                     )
                 },
             )

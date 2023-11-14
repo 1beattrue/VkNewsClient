@@ -40,8 +40,6 @@ fun PostCard(
     feedPost: FeedPost,
     onLikesClickListener: (StatisticItem) -> Unit,
     onCommentsClickListener: (StatisticItem) -> Unit,
-    onSharesClickListener: (StatisticItem) -> Unit,
-    onViewsClickListener: (StatisticItem) -> Unit
 ) {
     Card(
         modifier = modifier,
@@ -81,8 +79,6 @@ fun PostCard(
                 statistics = feedPost.statistics,
                 onLikesClickListener = onLikesClickListener,
                 onCommentsClickListener = onCommentsClickListener,
-                onSharesClickListener = onSharesClickListener,
-                onViewsClickListener = onViewsClickListener,
                 isFavourite = feedPost.isLiked
             )
         }
@@ -145,8 +141,6 @@ private fun Statistics(
     statistics: List<StatisticItem>,
     onLikesClickListener: (StatisticItem) -> Unit,
     onCommentsClickListener: (StatisticItem) -> Unit,
-    onSharesClickListener: (StatisticItem) -> Unit,
-    onViewsClickListener: (StatisticItem) -> Unit,
     isFavourite: Boolean
 ) {
     Row(
@@ -159,10 +153,7 @@ private fun Statistics(
             val viewsItem = statistics.getItemByType(StatisticType.VIEWS)
             IconWithText(
                 iconResId = R.drawable.ic_eye,
-                text = viewsItem.formattedCount(),
-                onItemClickListener = {
-                    onViewsClickListener(viewsItem)
-                }
+                text = viewsItem.formattedCount()
             )
         }
         Row(
@@ -172,10 +163,7 @@ private fun Statistics(
             val sharesItem = statistics.getItemByType(StatisticType.SHARES)
             IconWithText(
                 iconResId = R.drawable.ic_share,
-                text = sharesItem.formattedCount(),
-                onItemClickListener = {
-                    onSharesClickListener(sharesItem)
-                }
+                text = sharesItem.formattedCount()
             )
             val commentsItem = statistics.getItemByType(StatisticType.COMMENTS)
             IconWithText(
@@ -205,13 +193,19 @@ private fun Statistics(
 private fun IconWithText(
     iconResId: Int,
     text: String,
-    onItemClickListener: () -> Unit,
+    onItemClickListener: (() -> Unit)? = null,
     tint: Color = MaterialTheme.colorScheme.onSecondaryContainer
 ) {
-    Row(
-        modifier = Modifier.clickable {
+    val modifier = if (onItemClickListener == null) {
+        Modifier
+    } else {
+        Modifier.clickable {
             onItemClickListener()
         }
+    }
+
+    Row(
+        modifier = modifier
     ) {
         Icon(
             painter = painterResource(id = iconResId),
