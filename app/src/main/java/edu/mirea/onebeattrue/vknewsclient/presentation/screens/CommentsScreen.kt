@@ -28,6 +28,7 @@ import edu.mirea.onebeattrue.vknewsclient.presentation.states.CommentsScreenStat
 
 @Composable
 fun CommentsScreen(
+    paddingValues: PaddingValues,
     onBackPressed: () -> Unit,
     feedPost: FeedPost
 ) {
@@ -43,7 +44,8 @@ fun CommentsScreen(
                 comments = currentState.comments,
                 onBackPressed = {
                     onBackPressed()
-                }
+                },
+                paddingValues = paddingValues
             )
         }
         is CommentsScreenState.Initial -> {}
@@ -56,9 +58,11 @@ fun CommentsScreen(
 private fun Comments(
     feedPost: FeedPost,
     comments: List<PostComment>,
-    onBackPressed: () -> Unit
+    onBackPressed: () -> Unit,
+    paddingValues: PaddingValues
 ) {
     Scaffold(
+        modifier = Modifier.padding(paddingValues),
         topBar = {
             TopAppBar(
                 title = {
@@ -77,9 +81,9 @@ private fun Comments(
                 }
             )
         }
-    ) { paddingValues ->
+    ) { commentsPaddingValues ->
         LazyColumn(
-            modifier = Modifier.padding(paddingValues),
+            modifier = Modifier.padding(commentsPaddingValues),
             contentPadding = PaddingValues(
                 top = 8.dp,
                 start = 8.dp,

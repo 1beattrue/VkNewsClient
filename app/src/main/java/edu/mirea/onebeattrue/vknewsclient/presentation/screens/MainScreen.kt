@@ -69,11 +69,12 @@ fun MainScreen() {
                 }
             }
         }
-    ) {
+    ) { paddingValues ->
         AppNavGraph(
             navHostController = navigationState.navHostController,
             newsFeedScreenContent = {
                 NewsFeedScreen(
+                    paddingValues = paddingValues,
                     onCommentsClickListener = { feedPost ->
                         navigationState.navigateToComments(feedPost)
                     }
@@ -81,6 +82,7 @@ fun MainScreen() {
             },
             commentsScreenContent = { feedPost ->
                 CommentsScreen(
+                    paddingValues = paddingValues,
                     onBackPressed = {
                         navigationState.navHostController.popBackStack()
                     },

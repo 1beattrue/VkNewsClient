@@ -4,13 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.vk.api.sdk.VKPreferencesKeyValueStorage
-import com.vk.api.sdk.auth.VKAccessToken
-import edu.mirea.onebeattrue.vknewsclient.data.mapper.NewsFeedMapper
-import edu.mirea.onebeattrue.vknewsclient.data.network.ApiFactory
-import edu.mirea.onebeattrue.vknewsclient.data.network.ApiService
 import edu.mirea.onebeattrue.vknewsclient.data.repository.NewsFeedRepository
 import edu.mirea.onebeattrue.vknewsclient.domain.FeedPost
 import edu.mirea.onebeattrue.vknewsclient.domain.StatisticItem
@@ -44,6 +38,14 @@ class NewsFeedViewModel(application: Application) : AndroidViewModel(application
             val feedPosts = repository.loadRecommendations()
             _screenState.value = NewsFeedScreenState.Posts(feedPosts)
         }
+    }
+
+    fun loadNextRecommendations() {
+        _screenState.value = NewsFeedScreenState.Posts(
+            repository.feedPosts,
+            true
+        )
+        loadRecommendations()
     }
 
     fun updateCount(oldFeedPost: FeedPost, statisticItem: StatisticItem) {
