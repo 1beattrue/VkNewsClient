@@ -23,6 +23,7 @@ class NewsFeedViewModel(application: Application) : AndroidViewModel(application
     private val repository = NewsFeedRepository(application)
 
     init {
+        _screenState.value = NewsFeedScreenState.Loading
         loadRecommendations()
     }
 
