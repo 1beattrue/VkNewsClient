@@ -1,6 +1,5 @@
 package edu.mirea.onebeattrue.vknewsclient.ui
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -19,14 +18,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import edu.mirea.onebeattrue.vknewsclient.domain.PostComment
-import edu.mirea.onebeattrue.vknewsclient.ui.theme.VkNewsClientTheme
 
 @Composable
 fun CommentItem(
@@ -47,21 +43,20 @@ fun CommentItem(
                     horizontal = 8.dp
                 ),
         ) {
-            Image(
+            AsyncImage(
                 modifier = Modifier
                     .clip(CircleShape)
                     .size(48.dp),
-                painter = painterResource(comment.avatarResId),
+                model = comment.authorAvatarUrl,
                 contentDescription = null,
                 contentScale = ContentScale.Crop
             )
             Spacer(modifier = Modifier.width(8.dp))
             Column {
                 Text(
-                    text = "${comment.authorName} CommentId: ${comment.id}",
+                    text = comment.authorName,
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
                     fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
@@ -81,20 +76,4 @@ fun CommentItem(
         }
     }
 
-}
-
-@Preview
-@Composable
-private fun CommentItemPreviewLight() {
-    VkNewsClientTheme(darkTheme = false) {
-        CommentItem(comment = PostComment(id = 0))
-    }
-}
-
-@Preview
-@Composable
-private fun CommentItemPreviewDark() {
-    VkNewsClientTheme(darkTheme = true) {
-        CommentItem(comment = PostComment(id = 0))
-    }
 }

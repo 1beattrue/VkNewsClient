@@ -15,4 +15,5 @@
     <integer name="com_vk_sdk_AppId">51790322</integer>
 
     <string name="sign_in">Войти</string>
+    <string name="comments_title">Комментарии</string>
 </resources>

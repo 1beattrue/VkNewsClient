@@ -1,5 +1,6 @@
 package edu.mirea.onebeattrue.vknewsclient.data.network
 
+import edu.mirea.onebeattrue.vknewsclient.data.model.CommentsResponseDto
 import edu.mirea.onebeattrue.vknewsclient.data.model.LikesCountResponseDto
 import edu.mirea.onebeattrue.vknewsclient.data.model.NewsFeedResponseDto
 import retrofit2.http.GET
@@ -37,4 +38,11 @@ interface ApiService {
         @Query("owner_id") ownerId: Long,
         @Query("item_id") postId: Long
     )
+
+    @GET("wall.getComments?v=5.154&extended=1&fields=photo_100")
+    suspend fun getComments(
+        @Query("access_token") token: String,
+        @Query("owner_id") ownerId: Long,
+        @Query("post_id") postId: Long,
+    ): CommentsResponseDto
 }

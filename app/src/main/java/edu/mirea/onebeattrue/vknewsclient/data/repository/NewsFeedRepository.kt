@@ -6,6 +6,7 @@ import com.vk.api.sdk.auth.VKAccessToken
 import edu.mirea.onebeattrue.vknewsclient.data.mapper.NewsFeedMapper
 import edu.mirea.onebeattrue.vknewsclient.data.network.ApiFactory
 import edu.mirea.onebeattrue.vknewsclient.domain.FeedPost
+import edu.mirea.onebeattrue.vknewsclient.domain.PostComment
 import edu.mirea.onebeattrue.vknewsclient.domain.StatisticItem
 import edu.mirea.onebeattrue.vknewsclient.domain.StatisticType
 
@@ -34,7 +35,7 @@ class NewsFeedRepository(
         } else {
             apiService.loadRecommendations(getAccessToken(), startFrom)
         }
-        nextFrom = response.newsFeedContent.nextFrom
+        nextFrom = response.content.nextFrom
         val posts = mapper.mapResponseToPosts(responseDto = response)
         _feedPosts.addAll(posts)
         return feedPosts
@@ -73,6 +74,15 @@ class NewsFeedRepository(
             postId = feedPost.id
         )
         _feedPosts.remove(feedPost)
+    }
+
+    suspend fun getComments(feedPost: FeedPost): List<PostComment> {
+        val response = apiService.getComments(
+            token = getAccessToken(),
+            ownerId = feedPost.communityId,
+            postId = feedPost.id
+        )
+        return mapper.mapResponseToComments(response)
     }
 
     private fun getAccessToken(): String {

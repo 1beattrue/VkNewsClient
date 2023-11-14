@@ -2,6 +2,6 @@ package edu.mirea.onebeattrue.vknewsclient.data.model
 
 import com.google.gson.annotations.SerializedName
 
-data class NewsFeedResponseDto(
-    @SerializedName("response") val content: NewsFeedContentDto
+data class CommentsResponseDto(
+    @SerializedName("response") val content: CommentsContentDto
 )

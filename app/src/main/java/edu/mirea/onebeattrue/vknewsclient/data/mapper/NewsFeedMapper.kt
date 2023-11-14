@@ -1,7 +1,9 @@
 package edu.mirea.onebeattrue.vknewsclient.data.mapper
 
+import edu.mirea.onebeattrue.vknewsclient.data.model.CommentsResponseDto
 import edu.mirea.onebeattrue.vknewsclient.data.model.NewsFeedResponseDto
 import edu.mirea.onebeattrue.vknewsclient.domain.FeedPost
+import edu.mirea.onebeattrue.vknewsclient.domain.PostComment
 import edu.mirea.onebeattrue.vknewsclient.domain.StatisticItem
 import edu.mirea.onebeattrue.vknewsclient.domain.StatisticType
 import java.text.SimpleDateFormat
@@ -13,8 +15,8 @@ class NewsFeedMapper {
     fun mapResponseToPosts(responseDto: NewsFeedResponseDto): List<FeedPost> {
         val result = mutableListOf<FeedPost>()
 
-        val posts = responseDto.newsFeedContent.posts
-        val groups = responseDto.newsFeedContent.groups
+        val posts = responseDto.content.posts
+        val groups = responseDto.content.groups
 
         for (post in posts) {
             val group = groups.find { it.id == post.communityId.absoluteValue }
@@ -36,6 +38,27 @@ class NewsFeedMapper {
                 isLiked = post.likes.userLikes > 0
             )
             result.add(feedPost)
+        }
+
+        return result
+    }
+
+    fun mapResponseToComments(responseDto: CommentsResponseDto): List<PostComment> {
+        val result = mutableListOf<PostComment>()
+
+        val comments = responseDto.content.comments
+        val profiles = responseDto.content.profiles
+
+        for (comment in comments) {
+            val profile = profiles.firstOrNull { it.id == comment.authorId } ?: continue
+            val postComment = PostComment(
+                id = comment.id,
+                authorName = "${profile.firstName} ${profile.lastName}",
+                authorAvatarUrl = profile.avatarUrl,
+                commentText = comment.text,
+                publicationDate = mapTimestampToDate(comment.date)
+            )
+            result.add(postComment)
         }
 
         return result
