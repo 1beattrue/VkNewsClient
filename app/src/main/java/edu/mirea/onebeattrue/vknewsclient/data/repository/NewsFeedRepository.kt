@@ -66,6 +66,15 @@ class NewsFeedRepository(
         _feedPosts[postIndex] = newPost
     }
 
+    suspend fun deletePost(feedPost: FeedPost) {
+        apiService.ignorePost(
+            token = getAccessToken(),
+            ownerId = feedPost.communityId,
+            postId = feedPost.id
+        )
+        _feedPosts.remove(feedPost)
+    }
+
     private fun getAccessToken(): String {
         return token?.accessToken ?: throw RuntimeException("token is null")
     }

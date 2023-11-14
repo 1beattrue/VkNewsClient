@@ -48,6 +48,13 @@ class NewsFeedViewModel(application: Application) : AndroidViewModel(application
         loadRecommendations()
     }
 
+    fun deletePost(feedPost: FeedPost) {
+        viewModelScope.launch {
+            repository.deletePost(feedPost)
+            _screenState.value = NewsFeedScreenState.Posts(repository.feedPosts)
+        }
+    }
+
     fun updateCount(oldFeedPost: FeedPost, statisticItem: StatisticItem) {
         val currentState = _screenState.value
         if (currentState !is NewsFeedScreenState.Posts) return
@@ -76,14 +83,5 @@ class NewsFeedViewModel(application: Application) : AndroidViewModel(application
         }
 
         _screenState.value = NewsFeedScreenState.Posts(posts = newFeedPosts)
-    }
-
-    fun remove(feedPost: FeedPost) {
-        val currentState = _screenState.value
-        if (currentState !is NewsFeedScreenState.Posts) return
-
-        val feedPosts = currentState.posts.toMutableList()
-        feedPosts.remove(feedPost)
-        _screenState.value = NewsFeedScreenState.Posts(posts = feedPosts)
     }
 }

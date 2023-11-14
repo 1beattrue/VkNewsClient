@@ -73,7 +73,7 @@ private fun FeedPosts(
         items(items = posts, key = { it.id }) { feedPost ->
             val dismissState = rememberDismissState()
             if (dismissState.isDismissed(DismissDirection.EndToStart)) {
-                viewModel.remove(feedPost)
+                viewModel.deletePost(feedPost)
             }
 
             SwipeToDismiss(
