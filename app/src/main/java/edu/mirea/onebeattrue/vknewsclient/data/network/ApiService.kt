@@ -45,4 +45,12 @@ interface ApiService {
         @Query("owner_id") ownerId: Long,
         @Query("post_id") postId: Long,
     ): CommentsResponseDto
+
+    @GET("wall.getComments?v=5.154&extended=1&fields=photo_100")
+    suspend fun getComments(
+        @Query("access_token") token: String,
+        @Query("owner_id") ownerId: Long,
+        @Query("post_id") postId: Long,
+        @Query("start_comment_id") startCommentId: Long,
+    ): CommentsResponseDto
 }

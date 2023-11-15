@@ -5,7 +5,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -18,6 +20,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -56,7 +59,9 @@ fun CommentsScreen(
                 onBackPressed = {
                     onBackPressed()
                 },
-                paddingValues = paddingValues
+                paddingValues = paddingValues,
+                viewModel = viewModel,
+                feedPost = feedPost
             )
         }
 
@@ -81,7 +86,9 @@ fun CommentsScreen(
 private fun Comments(
     comments: List<PostComment>,
     onBackPressed: () -> Unit,
-    paddingValues: PaddingValues
+    paddingValues: PaddingValues,
+    viewModel: CommentsViewModel,
+    feedPost: FeedPost
 ) {
     Scaffold(
         modifier = Modifier.padding(paddingValues),
@@ -117,7 +124,11 @@ private fun Comments(
             items(items = comments, key = { it.id }) { comment ->
                 CommentItem(comment = comment)
             }
-
+            item {
+                SideEffect {
+                    viewModel.loadComments(feedPost = feedPost)
+                }
+            }
         }
     }
 }

@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import edu.mirea.onebeattrue.vknewsclient.data.repository.NewsFeedRepository
 import edu.mirea.onebeattrue.vknewsclient.domain.FeedPost
+import edu.mirea.onebeattrue.vknewsclient.domain.PostComment
 import edu.mirea.onebeattrue.vknewsclient.presentation.states.CommentsScreenState
 import kotlinx.coroutines.launch
 
@@ -21,18 +22,24 @@ class CommentsViewModel(
     val screenState: LiveData<CommentsScreenState>
         get() = _screenState
 
+    private var oldComments: List<PostComment> = listOf()
+
     init {
         _screenState.value = CommentsScreenState.Loading
         loadComments(feedPost)
     }
 
-    private fun loadComments(feedPost: FeedPost) {
+    fun loadComments(feedPost: FeedPost) {
         viewModelScope.launch {
-            val comments = repository.getComments(feedPost)
+            val comments = repository.getComments(
+                feedPost = feedPost,
+                oldComments = oldComments,
+            )
             _screenState.value = CommentsScreenState.Comments(
                 feedPost = feedPost,
                 comments = comments
             )
+            oldComments = comments
         }
     }
 }

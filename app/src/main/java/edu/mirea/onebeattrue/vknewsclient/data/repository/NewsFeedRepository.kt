@@ -76,13 +76,27 @@ class NewsFeedRepository(
         _feedPosts.remove(feedPost)
     }
 
-    suspend fun getComments(feedPost: FeedPost): List<PostComment> {
+    suspend fun getComments(
+        feedPost: FeedPost,
+        oldComments: List<PostComment> = listOf()
+    ): List<PostComment> {
+        if (oldComments.isEmpty()) {
+            val response = apiService.getComments(
+                token = getAccessToken(),
+                ownerId = feedPost.communityId,
+                postId = feedPost.id
+            )
+            return mapper.mapResponseToComments(response)
+        }
+        val startComment = oldComments.last()
         val response = apiService.getComments(
             token = getAccessToken(),
             ownerId = feedPost.communityId,
-            postId = feedPost.id
+            postId = feedPost.id,
+            startCommentId = startComment.id
         )
-        return mapper.mapResponseToComments(response)
+        val newComments = mapper.mapResponseToComments(response).filter { it != startComment }
+        return oldComments + newComments
     }
 
     private fun getAccessToken(): String {
