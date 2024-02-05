@@ -1,14 +1,18 @@
 package edu.mirea.onebeattrue.vknewsclient.presentation.viewmodels
 
 import android.app.Application
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import edu.mirea.onebeattrue.vknewsclient.data.repository.NewsFeedRepository
 import edu.mirea.onebeattrue.vknewsclient.domain.FeedPost
 import edu.mirea.onebeattrue.vknewsclient.domain.PostComment
+import edu.mirea.onebeattrue.vknewsclient.extensions.mergeWith
 import edu.mirea.onebeattrue.vknewsclient.presentation.states.CommentsScreenState
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
 class CommentsViewModel(
@@ -16,30 +20,32 @@ class CommentsViewModel(
     application: Application
 ) : ViewModel() {
 
+    private val exceptionHandler = CoroutineExceptionHandler { _, _ ->
+        Log.d("NewsFeedViewModel", "Exception caught by Exception Handler")
+    }
+
     private val repository = NewsFeedRepository(application)
 
-    private val _screenState = MutableLiveData<CommentsScreenState>(CommentsScreenState.Initial)
-    val screenState: LiveData<CommentsScreenState>
-        get() = _screenState
+    private val comments = repository.getComments(feedPost)
+
+    private val loadNextDataFlow = MutableSharedFlow<CommentsScreenState>()
+
+    val screenState = comments
+        .map { CommentsScreenState.Comments(feedPost, it) as CommentsScreenState }
+        .onStart { emit(CommentsScreenState.Loading) }
+        .mergeWith(loadNextDataFlow)
 
     private var oldComments: List<PostComment> = listOf()
 
-    init {
-        _screenState.value = CommentsScreenState.Loading
-        loadComments(feedPost)
-    }
-
     fun loadComments(feedPost: FeedPost) {
-        viewModelScope.launch {
-            val comments = repository.getComments(
-                feedPost = feedPost,
-                oldComments = oldComments,
+        viewModelScope.launch(exceptionHandler) {
+            loadNextDataFlow.emit(
+                CommentsScreenState.Comments(
+                    feedPost = feedPost,
+                    comments = comments.value
+                )
             )
-            _screenState.value = CommentsScreenState.Comments(
-                feedPost = feedPost,
-                comments = comments
-            )
-            oldComments = comments
+            oldComments = comments.value
         }
     }
 }
