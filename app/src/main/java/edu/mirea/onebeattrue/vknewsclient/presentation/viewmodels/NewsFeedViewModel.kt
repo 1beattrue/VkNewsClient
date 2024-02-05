@@ -1,12 +1,14 @@
 package edu.mirea.onebeattrue.vknewsclient.presentation.viewmodels
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import edu.mirea.onebeattrue.vknewsclient.data.repository.NewsFeedRepository
 import edu.mirea.onebeattrue.vknewsclient.domain.FeedPost
 import edu.mirea.onebeattrue.vknewsclient.extensions.mergeWith
 import edu.mirea.onebeattrue.vknewsclient.presentation.states.NewsFeedScreenState
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
@@ -14,6 +16,10 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
 class NewsFeedViewModel(application: Application) : AndroidViewModel(application) {
+    private val exceptionHandler = CoroutineExceptionHandler { _, _ ->
+        Log.d("NewsFeedViewModel", "Exception caught by Exception Handler")
+    }
+
     private val repository = NewsFeedRepository(application)
 
     private val recommendationsFlow = repository.recommendations
@@ -27,7 +33,7 @@ class NewsFeedViewModel(application: Application) : AndroidViewModel(application
         .mergeWith(loadNextDataFlow)
 
     fun changeLikeStatus(feedPost: FeedPost) {
-        viewModelScope.launch {
+        viewModelScope.launch(exceptionHandler) {
             repository.changeLikeStatus(feedPost)
         }
     }
@@ -45,7 +51,7 @@ class NewsFeedViewModel(application: Application) : AndroidViewModel(application
     }
 
     fun deletePost(feedPost: FeedPost) {
-        viewModelScope.launch {
+        viewModelScope.launch(exceptionHandler) {
             repository.deletePost(feedPost)
         }
     }
