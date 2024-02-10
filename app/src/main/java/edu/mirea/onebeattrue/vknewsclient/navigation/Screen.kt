@@ -2,7 +2,7 @@ package edu.mirea.onebeattrue.vknewsclient.navigation
 
 import android.net.Uri
 import com.google.gson.Gson
-import edu.mirea.onebeattrue.vknewsclient.domain.FeedPost
+import edu.mirea.onebeattrue.vknewsclient.domain.entity.FeedPost
 
 sealed class Screen(
     val route: String

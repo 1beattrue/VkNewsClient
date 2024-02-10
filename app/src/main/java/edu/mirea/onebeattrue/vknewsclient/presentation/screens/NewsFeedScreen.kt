@@ -22,7 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import edu.mirea.onebeattrue.vknewsclient.domain.FeedPost
+import edu.mirea.onebeattrue.vknewsclient.domain.entity.FeedPost
 import edu.mirea.onebeattrue.vknewsclient.presentation.states.NewsFeedScreenState
 import edu.mirea.onebeattrue.vknewsclient.presentation.viewmodels.NewsFeedViewModel
 import edu.mirea.onebeattrue.vknewsclient.ui.PostCard

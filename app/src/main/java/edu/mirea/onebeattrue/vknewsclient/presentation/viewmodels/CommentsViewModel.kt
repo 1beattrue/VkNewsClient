@@ -4,9 +4,10 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import edu.mirea.onebeattrue.vknewsclient.data.repository.NewsFeedRepository
-import edu.mirea.onebeattrue.vknewsclient.domain.FeedPost
-import edu.mirea.onebeattrue.vknewsclient.domain.PostComment
+import edu.mirea.onebeattrue.vknewsclient.data.repository.NewsFeedRepositoryImpl
+import edu.mirea.onebeattrue.vknewsclient.domain.entity.FeedPost
+import edu.mirea.onebeattrue.vknewsclient.domain.entity.PostComment
+import edu.mirea.onebeattrue.vknewsclient.domain.usecase.GetCommentsUseCase
 import edu.mirea.onebeattrue.vknewsclient.extensions.mergeWith
 import edu.mirea.onebeattrue.vknewsclient.presentation.states.CommentsScreenState
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -24,9 +25,11 @@ class CommentsViewModel(
         Log.d("NewsFeedViewModel", "Exception caught by Exception Handler")
     }
 
-    private val repository = NewsFeedRepository(application)
+    private val repository = NewsFeedRepositoryImpl(application)
 
-    private val comments = repository.getComments(feedPost)
+    private val getCommentsUseCase = GetCommentsUseCase(repository)
+
+    private val comments = getCommentsUseCase(feedPost)
 
     private val loadNextDataFlow = MutableSharedFlow<CommentsScreenState>()
 

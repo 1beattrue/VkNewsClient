@@ -1,7 +1,7 @@
 package edu.mirea.onebeattrue.vknewsclient.presentation.states
 
-import edu.mirea.onebeattrue.vknewsclient.domain.FeedPost
-import edu.mirea.onebeattrue.vknewsclient.domain.PostComment
+import edu.mirea.onebeattrue.vknewsclient.domain.entity.FeedPost
+import edu.mirea.onebeattrue.vknewsclient.domain.entity.PostComment
 
 sealed class CommentsScreenState {
     object Initial : CommentsScreenState()

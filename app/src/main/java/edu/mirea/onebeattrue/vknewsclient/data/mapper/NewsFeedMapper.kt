@@ -2,10 +2,10 @@ package edu.mirea.onebeattrue.vknewsclient.data.mapper
 
 import edu.mirea.onebeattrue.vknewsclient.data.model.CommentsResponseDto
 import edu.mirea.onebeattrue.vknewsclient.data.model.NewsFeedResponseDto
-import edu.mirea.onebeattrue.vknewsclient.domain.FeedPost
-import edu.mirea.onebeattrue.vknewsclient.domain.PostComment
-import edu.mirea.onebeattrue.vknewsclient.domain.StatisticItem
-import edu.mirea.onebeattrue.vknewsclient.domain.StatisticType
+import edu.mirea.onebeattrue.vknewsclient.domain.entity.FeedPost
+import edu.mirea.onebeattrue.vknewsclient.domain.entity.PostComment
+import edu.mirea.onebeattrue.vknewsclient.domain.entity.StatisticItem
+import edu.mirea.onebeattrue.vknewsclient.domain.entity.StatisticType
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale

@@ -28,8 +28,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import edu.mirea.onebeattrue.vknewsclient.R
-import edu.mirea.onebeattrue.vknewsclient.domain.FeedPost
-import edu.mirea.onebeattrue.vknewsclient.domain.PostComment
+import edu.mirea.onebeattrue.vknewsclient.domain.entity.FeedPost
+import edu.mirea.onebeattrue.vknewsclient.domain.entity.PostComment
 import edu.mirea.onebeattrue.vknewsclient.presentation.states.CommentsScreenState
 import edu.mirea.onebeattrue.vknewsclient.presentation.viewmodels.CommentsViewModel
 import edu.mirea.onebeattrue.vknewsclient.presentation.viewmodels.CommentsViewModelFactory

@@ -1,6 +1,6 @@
 package edu.mirea.onebeattrue.vknewsclient.presentation.states
 
-import edu.mirea.onebeattrue.vknewsclient.domain.FeedPost
+import edu.mirea.onebeattrue.vknewsclient.domain.entity.FeedPost
 
 sealed class NewsFeedScreenState {
     object Initial : NewsFeedScreenState()

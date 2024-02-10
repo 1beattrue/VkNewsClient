@@ -1,4 +1,4 @@
-package edu.mirea.onebeattrue.vknewsclient.domain
+package edu.mirea.onebeattrue.vknewsclient.domain.entity
 
 import android.os.Bundle
 import android.os.Parcelable

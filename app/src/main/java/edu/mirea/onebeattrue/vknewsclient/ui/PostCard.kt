@@ -30,9 +30,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import edu.mirea.onebeattrue.vknewsclient.R
-import edu.mirea.onebeattrue.vknewsclient.domain.FeedPost
-import edu.mirea.onebeattrue.vknewsclient.domain.StatisticItem
-import edu.mirea.onebeattrue.vknewsclient.domain.StatisticType
+import edu.mirea.onebeattrue.vknewsclient.domain.entity.FeedPost
+import edu.mirea.onebeattrue.vknewsclient.domain.entity.StatisticItem
+import edu.mirea.onebeattrue.vknewsclient.domain.entity.StatisticType
 
 @Composable
 fun PostCard(

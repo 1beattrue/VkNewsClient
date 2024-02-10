@@ -1,4 +1,4 @@
-package edu.mirea.onebeattrue.vknewsclient.domain
+package edu.mirea.onebeattrue.vknewsclient.domain.entity
 
 sealed class NewsFeedResult {
     object Error : NewsFeedResult()
