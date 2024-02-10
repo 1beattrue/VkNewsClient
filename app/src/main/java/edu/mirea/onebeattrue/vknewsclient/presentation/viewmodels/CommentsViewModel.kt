@@ -1,10 +1,8 @@
 package edu.mirea.onebeattrue.vknewsclient.presentation.viewmodels
 
-import android.app.Application
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import edu.mirea.onebeattrue.vknewsclient.data.repository.NewsFeedRepositoryImpl
 import edu.mirea.onebeattrue.vknewsclient.domain.entity.FeedPost
 import edu.mirea.onebeattrue.vknewsclient.domain.entity.PostComment
 import edu.mirea.onebeattrue.vknewsclient.domain.usecase.GetCommentsUseCase
@@ -15,19 +13,16 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class CommentsViewModel(
-    feedPost: FeedPost,
-    application: Application
+class CommentsViewModel @Inject constructor(
+    private val feedPost: FeedPost,
+    private val getCommentsUseCase: GetCommentsUseCase
 ) : ViewModel() {
 
     private val exceptionHandler = CoroutineExceptionHandler { _, _ ->
         Log.d("NewsFeedViewModel", "Exception caught by Exception Handler")
     }
-
-    private val repository = NewsFeedRepositoryImpl(application)
-
-    private val getCommentsUseCase = GetCommentsUseCase(repository)
 
     private val comments = getCommentsUseCase(feedPost)
 

@@ -1,10 +1,9 @@
 package edu.mirea.onebeattrue.vknewsclient.data.repository
 
-import android.app.Application
 import com.vk.api.sdk.VKPreferencesKeyValueStorage
 import com.vk.api.sdk.auth.VKAccessToken
 import edu.mirea.onebeattrue.vknewsclient.data.mapper.NewsFeedMapper
-import edu.mirea.onebeattrue.vknewsclient.data.network.ApiFactory
+import edu.mirea.onebeattrue.vknewsclient.data.network.ApiService
 import edu.mirea.onebeattrue.vknewsclient.domain.entity.AuthState
 import edu.mirea.onebeattrue.vknewsclient.domain.entity.FeedPost
 import edu.mirea.onebeattrue.vknewsclient.domain.entity.PostComment
@@ -21,9 +20,12 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.retry
 import kotlinx.coroutines.flow.stateIn
+import javax.inject.Inject
 
-class NewsFeedRepositoryImpl(
-    application: Application
+class NewsFeedRepositoryImpl @Inject constructor(
+    private val apiService: ApiService,
+    private val mapper: NewsFeedMapper,
+    private val storage: VKPreferencesKeyValueStorage,
 ) : NewsFeedRepository {
     private val refreshedListFlow = MutableSharedFlow<List<FeedPost>>()
     private val nextDataNeededEvents = MutableSharedFlow<Unit>(replay = 1)
@@ -72,12 +74,8 @@ class NewsFeedRepositoryImpl(
         initialValue = AuthState.Initial
     )
 
-    private val storage = VKPreferencesKeyValueStorage(application)
     private val token
         get() = VKAccessToken.restore(storage)
-
-    private val apiService = ApiFactory.apiService
-    private val mapper = NewsFeedMapper()
 
     private val _feedPosts = mutableListOf<FeedPost>()
     private val feedPosts: List<FeedPost>

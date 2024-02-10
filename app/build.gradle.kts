@@ -53,8 +53,8 @@ android {
 
 dependencies {
 
-    implementation("com.google.dagger:hilt-android:2.50")
-    kapt("com.google.dagger:hilt-compiler:2.50")
+    implementation("com.google.dagger:dagger:2.50")
+    kapt("com.google.dagger:dagger-compiler:2.50")
 
     implementation("io.coil-kt:coil-compose:2.5.0")
 

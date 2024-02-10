@@ -1,6 +1,5 @@
 package edu.mirea.onebeattrue.vknewsclient.presentation.screens
 
-import android.app.Application
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -22,7 +21,6 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -32,7 +30,7 @@ import edu.mirea.onebeattrue.vknewsclient.domain.entity.FeedPost
 import edu.mirea.onebeattrue.vknewsclient.domain.entity.PostComment
 import edu.mirea.onebeattrue.vknewsclient.presentation.states.CommentsScreenState
 import edu.mirea.onebeattrue.vknewsclient.presentation.viewmodels.CommentsViewModel
-import edu.mirea.onebeattrue.vknewsclient.presentation.viewmodels.CommentsViewModelFactory
+import edu.mirea.onebeattrue.vknewsclient.presentation.viewmodels.ViewModelFactory
 import edu.mirea.onebeattrue.vknewsclient.ui.CommentItem
 import edu.mirea.onebeattrue.vknewsclient.ui.theme.VkColor
 
@@ -40,13 +38,11 @@ import edu.mirea.onebeattrue.vknewsclient.ui.theme.VkColor
 fun CommentsScreen(
     paddingValues: PaddingValues,
     onBackPressed: () -> Unit,
-    feedPost: FeedPost
+    feedPost: FeedPost,
+    viewModelFactory: ViewModelFactory
 ) {
     val viewModel: CommentsViewModel = viewModel(
-        factory = CommentsViewModelFactory(
-            feedPost = feedPost,
-            application = LocalContext.current.applicationContext as Application // получение application из compose fun
-        )
+        factory = viewModelFactory
     )
     val screenState = viewModel.screenState.collectAsState(CommentsScreenState.Initial)
 

@@ -25,6 +25,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import edu.mirea.onebeattrue.vknewsclient.domain.entity.FeedPost
 import edu.mirea.onebeattrue.vknewsclient.presentation.states.NewsFeedScreenState
 import edu.mirea.onebeattrue.vknewsclient.presentation.viewmodels.NewsFeedViewModel
+import edu.mirea.onebeattrue.vknewsclient.presentation.viewmodels.ViewModelFactory
 import edu.mirea.onebeattrue.vknewsclient.ui.PostCard
 import edu.mirea.onebeattrue.vknewsclient.ui.theme.VkColor
 
@@ -32,9 +33,10 @@ import edu.mirea.onebeattrue.vknewsclient.ui.theme.VkColor
 @Composable
 fun NewsFeedScreen(
     paddingValues: PaddingValues,
-    onCommentsClickListener: (FeedPost) -> Unit
+    onCommentsClickListener: (FeedPost) -> Unit,
+    viewModelFactory: ViewModelFactory
 ) {
-    val viewModel: NewsFeedViewModel = viewModel() // нужен impl
+    val viewModel: NewsFeedViewModel = viewModel(factory = viewModelFactory) // нужен impl
     val screenState = viewModel.screenState.collectAsState(NewsFeedScreenState.Initial)
 
     when (val currentState = screenState.value) {

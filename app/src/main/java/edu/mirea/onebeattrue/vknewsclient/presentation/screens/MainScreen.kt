@@ -22,10 +22,11 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import edu.mirea.onebeattrue.vknewsclient.navigation.AppNavGraph
 import edu.mirea.onebeattrue.vknewsclient.navigation.NavigationItem
 import edu.mirea.onebeattrue.vknewsclient.navigation.rememberNavigationState
+import edu.mirea.onebeattrue.vknewsclient.presentation.viewmodels.ViewModelFactory
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun MainScreen() {
+fun MainScreen(viewModelFactory: ViewModelFactory) {
     val navigationState = rememberNavigationState()
 
     Scaffold(
@@ -77,7 +78,8 @@ fun MainScreen() {
                     paddingValues = paddingValues,
                     onCommentsClickListener = { feedPost ->
                         navigationState.navigateToComments(feedPost)
-                    }
+                    },
+                    viewModelFactory = viewModelFactory
                 )
             },
             commentsScreenContent = { feedPost ->
@@ -86,7 +88,8 @@ fun MainScreen() {
                     onBackPressed = {
                         navigationState.navHostController.popBackStack()
                     },
-                    feedPost = feedPost
+                    feedPost = feedPost,
+                    viewModelFactory = viewModelFactory
                 )
             },
             favouriteScreenContent = { TextCounter(name = "Favourite") },
