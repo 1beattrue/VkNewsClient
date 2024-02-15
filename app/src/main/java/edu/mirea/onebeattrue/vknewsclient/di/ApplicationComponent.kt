@@ -3,8 +3,7 @@ package edu.mirea.onebeattrue.vknewsclient.di
 import android.content.Context
 import dagger.BindsInstance
 import dagger.Component
-import edu.mirea.onebeattrue.vknewsclient.domain.entity.FeedPost
-import edu.mirea.onebeattrue.vknewsclient.presentation.MainActivity
+import edu.mirea.onebeattrue.vknewsclient.presentation.viewmodels.ViewModelFactory
 
 @ApplicationScope
 @Component(
@@ -14,14 +13,14 @@ import edu.mirea.onebeattrue.vknewsclient.presentation.MainActivity
     ]
 )
 interface ApplicationComponent {
+    fun getViewModelFactory(): ViewModelFactory
 
-    fun inject(mainActivity: MainActivity)
+    fun getCommentScreenComponentFactory(): CommentScreenComponent.Factory
 
     @Component.Factory
     interface Factory {
         fun create(
-            @BindsInstance context: Context,
-            @BindsInstance feedPost: FeedPost
+            @BindsInstance context: Context
         ): ApplicationComponent
     }
 }

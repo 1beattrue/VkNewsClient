@@ -12,37 +12,29 @@ import edu.mirea.onebeattrue.vknewsclient.domain.entity.AuthState
 import edu.mirea.onebeattrue.vknewsclient.presentation.screens.LoginScreen
 import edu.mirea.onebeattrue.vknewsclient.presentation.screens.MainScreen
 import edu.mirea.onebeattrue.vknewsclient.presentation.viewmodels.MainViewModel
-import edu.mirea.onebeattrue.vknewsclient.presentation.viewmodels.ViewModelFactory
 import edu.mirea.onebeattrue.vknewsclient.ui.theme.VkNewsClientTheme
-import javax.inject.Inject
 
 class MainActivity : ComponentActivity() {
-
-    @Inject
-    lateinit var viewModelFactory: ViewModelFactory
-
-    private val component by lazy {
-        (application as VkNewsApplication).component
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
-        component.inject(this)
         super.onCreate(savedInstanceState)
         setContent {
+            val component = getApplicationComponent()
+            val viewModelFactory = component.getViewModelFactory()
+
+            val viewModel: MainViewModel = viewModel(
+                factory = viewModelFactory
+            )
+            val authState = viewModel.authState.collectAsState(AuthState.Initial)
+
+            val launcher = rememberLauncherForActivityResult(
+                contract = VK.getVKAuthActivityResultContract()
+            ) {
+                viewModel.performAuthResult()
+            }
+
             VkNewsClientTheme {
-                val viewModel: MainViewModel = viewModel(
-                    factory = viewModelFactory
-                )
-                val authState = viewModel.authState.collectAsState(AuthState.Initial)
-
-                val launcher = rememberLauncherForActivityResult(
-                    contract = VK.getVKAuthActivityResultContract()
-                ) {
-                    viewModel.performAuthResult()
-                }
-
                 when (authState.value) {
-                    AuthState.Authorized -> MainScreen(viewModelFactory)
+                    AuthState.Authorized -> MainScreen()
                     AuthState.NotAuthorized -> LoginScreen {
                         launcher.launch(listOf(VKScope.WALL, VKScope.FRIENDS))
                     }

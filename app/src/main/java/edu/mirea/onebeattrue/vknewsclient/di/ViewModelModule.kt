@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
-import edu.mirea.onebeattrue.vknewsclient.presentation.viewmodels.CommentsViewModel
 import edu.mirea.onebeattrue.vknewsclient.presentation.viewmodels.MainViewModel
 import edu.mirea.onebeattrue.vknewsclient.presentation.viewmodels.NewsFeedViewModel
 
@@ -19,9 +18,4 @@ interface ViewModelModule {
     @ViewModelKey(MainViewModel::class)
     @Binds
     fun bindMainViewModel(viewModel: MainViewModel): ViewModel
-
-    @IntoMap
-    @ViewModelKey(CommentsViewModel::class)
-    @Binds
-    fun bindCommentsViewModel(viewModel: CommentsViewModel): ViewModel
 }

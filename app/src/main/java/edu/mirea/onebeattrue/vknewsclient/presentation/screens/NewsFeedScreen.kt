@@ -17,15 +17,16 @@ import androidx.compose.material3.SwipeToDismiss
 import androidx.compose.material3.rememberDismissState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import edu.mirea.onebeattrue.vknewsclient.domain.entity.FeedPost
+import edu.mirea.onebeattrue.vknewsclient.presentation.getApplicationComponent
 import edu.mirea.onebeattrue.vknewsclient.presentation.states.NewsFeedScreenState
 import edu.mirea.onebeattrue.vknewsclient.presentation.viewmodels.NewsFeedViewModel
-import edu.mirea.onebeattrue.vknewsclient.presentation.viewmodels.ViewModelFactory
 import edu.mirea.onebeattrue.vknewsclient.ui.PostCard
 import edu.mirea.onebeattrue.vknewsclient.ui.theme.VkColor
 
@@ -33,12 +34,29 @@ import edu.mirea.onebeattrue.vknewsclient.ui.theme.VkColor
 @Composable
 fun NewsFeedScreen(
     paddingValues: PaddingValues,
-    onCommentsClickListener: (FeedPost) -> Unit,
-    viewModelFactory: ViewModelFactory
+    onCommentsClickListener: (FeedPost) -> Unit
 ) {
+    val component = getApplicationComponent()
+    val viewModelFactory = component.getViewModelFactory()
+
     val viewModel: NewsFeedViewModel = viewModel(factory = viewModelFactory) // нужен impl
     val screenState = viewModel.screenState.collectAsState(NewsFeedScreenState.Initial)
 
+    NewsFeedScreenContent(
+        screenState = screenState,
+        viewModel = viewModel,
+        onCommentsClickListener = onCommentsClickListener,
+        paddingValues = paddingValues
+    )
+}
+
+@Composable
+private fun NewsFeedScreenContent(
+    screenState: State<NewsFeedScreenState>,
+    viewModel: NewsFeedViewModel,
+    onCommentsClickListener: (FeedPost) -> Unit,
+    paddingValues: PaddingValues
+) {
     when (val currentState = screenState.value) {
         is NewsFeedScreenState.Posts -> {
             FeedPosts(

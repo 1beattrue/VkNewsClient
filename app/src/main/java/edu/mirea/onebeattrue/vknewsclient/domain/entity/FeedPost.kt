@@ -2,10 +2,16 @@ package edu.mirea.onebeattrue.vknewsclient.domain.entity
 
 import android.os.Bundle
 import android.os.Parcelable
+import androidx.compose.runtime.Immutable
 import androidx.navigation.NavType
 import com.google.gson.Gson
 import kotlinx.parcelize.Parcelize
 
+/*
+ пометка для компилятора что объект неизменяемый
+ (рекомпозиции при повторной передаче не будет)
+*/
+@Immutable
 @Parcelize
 data class FeedPost(
     val id: Long,

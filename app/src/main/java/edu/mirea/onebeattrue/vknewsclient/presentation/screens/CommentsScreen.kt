@@ -18,6 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,9 +29,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import edu.mirea.onebeattrue.vknewsclient.R
 import edu.mirea.onebeattrue.vknewsclient.domain.entity.FeedPost
 import edu.mirea.onebeattrue.vknewsclient.domain.entity.PostComment
+import edu.mirea.onebeattrue.vknewsclient.presentation.getApplicationComponent
 import edu.mirea.onebeattrue.vknewsclient.presentation.states.CommentsScreenState
 import edu.mirea.onebeattrue.vknewsclient.presentation.viewmodels.CommentsViewModel
-import edu.mirea.onebeattrue.vknewsclient.presentation.viewmodels.ViewModelFactory
 import edu.mirea.onebeattrue.vknewsclient.ui.CommentItem
 import edu.mirea.onebeattrue.vknewsclient.ui.theme.VkColor
 
@@ -38,14 +39,34 @@ import edu.mirea.onebeattrue.vknewsclient.ui.theme.VkColor
 fun CommentsScreen(
     paddingValues: PaddingValues,
     onBackPressed: () -> Unit,
-    feedPost: FeedPost,
-    viewModelFactory: ViewModelFactory
+    feedPost: FeedPost
 ) {
+    val component = getApplicationComponent()
+        .getCommentScreenComponentFactory()
+        .create(feedPost)
+
     val viewModel: CommentsViewModel = viewModel(
-        factory = viewModelFactory
+        factory = component.getViewModelFactory()
     )
     val screenState = viewModel.screenState.collectAsState(CommentsScreenState.Initial)
 
+    CommentsScreenContent(
+        screenState = screenState,
+        onBackPressed = onBackPressed,
+        viewModel = viewModel,
+        paddingValues = paddingValues,
+        feedPost = feedPost
+    )
+}
+
+@Composable
+private fun CommentsScreenContent(
+    screenState: State<CommentsScreenState>,
+    onBackPressed: () -> Unit,
+    viewModel: CommentsViewModel,
+    paddingValues: PaddingValues,
+    feedPost: FeedPost
+) {
     when (val currentState = screenState.value) {
         is CommentsScreenState.Comments -> {
             Comments(
@@ -72,7 +93,6 @@ fun CommentsScreen(
 
         is CommentsScreenState.Initial -> {}
     }
-
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
