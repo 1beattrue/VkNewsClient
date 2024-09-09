@@ -23,4 +23,4 @@
 - **Coroutine Flow**: Для работы с асинхронными потоками данных.
 
 ## Скриншоты
-<img src="1.png" alt="Screenshot" style="width: 25%;"> <img src="2.png" alt="Screenshot" style="width: 25%;"> <img src="3.png" alt="Screenshot" style="width: 25%;">
+<img src="1.png" alt="Screenshot" style="width: 30%;"> <img src="2.png" alt="Screenshot" style="width: 30%;"> <img src="3.png" alt="Screenshot" style="width: 30%;">
